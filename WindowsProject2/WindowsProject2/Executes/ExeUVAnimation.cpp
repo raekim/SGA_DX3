@@ -66,8 +66,6 @@ ExeUVAnimation::ExeUVAnimation(ExecuteValues* values) : Execute(values), vertexC
 
 	// 텍스쳐 전체 사이즈 감안하여 적절한 vertex 좌표 설정
 	{
-		float textureWidth, textureHeight;
-		
 		ID3D11Texture2D *pTextureInterface = 0;
 		ID3D11Resource *res;
 		srv->GetResource(&res);
@@ -75,21 +73,11 @@ ExeUVAnimation::ExeUVAnimation(ExecuteValues* values) : Execute(values), vertexC
 		D3D11_TEXTURE2D_DESC desc;
 		pTextureInterface->GetDesc(&desc);
 
-		textureWidth = (desc.Width) / 250.0f;
-		textureHeight = (desc.Height) / 250.0f;
+		float textureWidth = (desc.Width) / 250.0f;
+		float textureHeight = (desc.Height) / 250.0f;
 
-		float frameWidth = textureWidth / width;
-		float frameHeight = textureHeight / height;
-
-		vertices[0].Position = D3DXVECTOR3(-frameWidth / 2, -frameHeight / 2, 0);
-		vertices[1].Position = D3DXVECTOR3(-frameWidth / 2, frameHeight / 2, 0);
-		vertices[2].Position = D3DXVECTOR3(frameWidth / 2, -frameHeight / 2, 0);
-		vertices[3].Position = D3DXVECTOR3(frameWidth / 2, frameHeight / 2, 0);
-
-		//vertices[0].Uv = D3DXVECTOR2(0, 1);
-		//vertices[1].Uv = D3DXVECTOR2(0, 0);
-		//vertices[2].Uv = D3DXVECTOR2(1, 1);
-		//vertices[3].Uv = D3DXVECTOR2(1, 0);
+		frameWidth = textureWidth / width;
+		frameHeight = textureHeight / height;
 	}
 }
 
@@ -105,31 +93,91 @@ ExeUVAnimation::~ExeUVAnimation()
 	SAFE_DELETE(shader);
 }
 
-void ExeUVAnimation::NextFrame(int frameNum, VertexTexture* UvIndexArray)
+void ExeUVAnimation::NextFrame(int frameIndex)
 {
+	if (frameIndex >= totalFrameNumber) return;
+
 	float w = 1.0f / width;
 	float h = 1.0f / height;
 
-	// frameNum에 맞는 UV인덱스 설정
-	UvIndexArray[0].Uv = { (frameNum % width)*w, (frameNum / width + 1)*h };
-	UvIndexArray[1].Uv = { (frameNum % width)*w, (frameNum / width)*h };
-	UvIndexArray[2].Uv = { (frameNum % width + 1)*w, (frameNum / width + 1)*h };
-	UvIndexArray[3].Uv = { (frameNum % width + 1)*w, (frameNum / width)*h };
+	// frameIndex에 맞는 UV인덱스 설정
+	vertices[0].Uv = { (frameIndex % width)*w, (frameIndex / width + 1)*h };
+	vertices[1].Uv = { (frameIndex % width)*w, (frameIndex / width)*h };
+	vertices[2].Uv = { (frameIndex % width + 1)*w, (frameIndex / width + 1)*h };
+	vertices[3].Uv = { (frameIndex % width + 1)*w, (frameIndex / width)*h };
+
+	if (!facingRight)
+	{
+		swap(vertices[0].Uv, vertices[2].Uv);
+		swap(vertices[1].Uv, vertices[3].Uv);
+	}
+}
+
+bool ExeUVAnimation::Move()
+{
+	velocity = { 0,0,0 };
+
+	if (Keyboard::Get()->Press('A'))
+	{
+		velocity.x--;
+	}
+	if (Keyboard::Get()->Press('D'))
+	{
+		velocity.x++;
+	}
+	if (Keyboard::Get()->Press('W'))
+	{
+		velocity.y++;
+	}
+	if (Keyboard::Get()->Press('S'))
+	{
+		velocity.y--;
+	}
+
+	D3DXVec3Normalize(&velocity, &velocity);
+	velocity *= moveSpeed;
+
+	position += velocity * Time::Delta();
+
+	// position 에 맞게 vertex 좌표 변경
+	vertices[0].Position = D3DXVECTOR3(-frameWidth / 2, -frameHeight / 2, 0) + position;
+	vertices[1].Position = D3DXVECTOR3(-frameWidth / 2, frameHeight / 2, 0) + position;
+	vertices[2].Position = D3DXVECTOR3(frameWidth / 2, -frameHeight / 2, 0) + position;
+	vertices[3].Position = D3DXVECTOR3(frameWidth / 2, frameHeight / 2, 0) + position;
+
+	if (velocity.x > 0.0f)
+	{
+		facingRight = true;
+	}
+	if (velocity.x < 0.0f)
+	{
+		facingRight = false;
+	}
+
+	return D3DXVec3Length(&velocity) > 0.0f;
 }
 
 void ExeUVAnimation::Update() 
 {
 	static float count = 1.0f;
 
-	// 다음 프레임으로
-	if (count >= 1.0f / animationFPS)
+	// 이동
+	bool moved = Move();
+	bool animationNextFrame = count >= 1.0f / animationFPS;
+
+	// 애니메이션 프레임 갱신
+	if (animationNextFrame)
 	{
 		currentFrameIndex = (currentFrameIndex + 1) % (totalFrameNumber);
 		
-		NextFrame(currentFrameIndex, vertices);
-		D3D::GetDC()->UpdateSubresource(vertexBuffer, 0, NULL, vertices, sizeof(VertexColor)*vertexCount, 0);
+		NextFrame(currentFrameIndex);
 
 		count = 0.0f;
+	}
+
+	if (moved || animationNextFrame)
+	{
+		D3D::GetDC()->UpdateSubresource(vertexBuffer, 0, NULL, vertices, sizeof(VertexColor)*vertexCount, 0);
 	}
 
 	count += Time::Delta();

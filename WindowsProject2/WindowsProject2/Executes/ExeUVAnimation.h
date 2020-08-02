@@ -6,12 +6,18 @@ class ExeUVAnimation : public Execute
 {
 private:
 	class ColorBuffer;
-	int currentFrameIndex = 0;
 	const int width = 6;
 	const int height = 4;
-	int animationFPS = 24;
 	const int totalFrameNumber = width * height;
+	float frameWidth, frameHeight;
 
+	int currentFrameIndex = 0;
+	int animationFPS = 24;
+	
+	bool facingRight = true;
+	float moveSpeed = 1.2f;
+	D3DXVECTOR3 velocity;
+	D3DXVECTOR3 position = { 0,0,0 };
 public:
 	ExeUVAnimation(ExecuteValues* values);
 	~ExeUVAnimation();
@@ -38,6 +44,7 @@ private:
 
 	ID3D11ShaderResourceView * srv;
 
-	void NextFrame(int frameNumber, VertexTexture* UvIndexArray);	// frameNumber에 해당하는 uv좌표를 UvIndexArray에 저장한다
+	void NextFrame(int frameIndex);	// frameNumber에 해당하는 uv좌표를 UvIndexArray에 저장한다
+	bool Move();
 };
 
