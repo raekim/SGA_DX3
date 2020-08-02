@@ -1,6 +1,6 @@
 #include "framework.h"
 #include "Program.h"
-#include "Executes/ExeTriangle.h"
+#include "Executes/ExeUVAnimation.h"
 
 Program::Program()
 {
@@ -21,7 +21,7 @@ Program::Program()
 
 	D3DXMatrixLookAtLH(&view, &position, &(position + forward), &up);
 
-	executes.push_back(new ExeTriangle(values));
+	executes.push_back(new ExeUVAnimation(values));
 }
 
 Program::~Program()

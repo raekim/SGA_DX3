@@ -58,6 +58,7 @@ using namespace std;
 #pragma comment(lib, "directxtex.lib")
 
 const wstring Shaders = L"../../_Shaders/";
+const wstring Textures = L"../../_Textures/";
 
 #define SAFE_RELEASE(p){if(p) {(p)->Release(); (p) = NULL;}}
 #define SAFE_DELETE(p){if(p) {delete (p); (p) = NULL;}}
