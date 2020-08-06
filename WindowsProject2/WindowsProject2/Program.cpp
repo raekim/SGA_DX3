@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "Program.h"
 #include "Executes/ExeUVAnimation.h"
+#include "Executes/ExeTexture.h"
 
 Program::Program()
 {
@@ -21,7 +22,8 @@ Program::Program()
 
 	D3DXMatrixLookAtLH(&view, &position, &(position + forward), &up);
 
-	executes.push_back(new ExeUVAnimation(values));
+	//executes.push_back(new ExeUVAnimation(values));
+	executes.push_back(new ExeTexture(values));
 }
 
 Program::~Program()
