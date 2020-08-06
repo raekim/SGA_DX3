@@ -111,6 +111,12 @@
     <ClInclude Include="Executes\ExeTexture.h">
       <Filter>Executes</Filter>
     </ClInclude>
+    <ClInclude Include="Executes\ExeKorea.h">
+      <Filter>Executes</Filter>
+    </ClInclude>
+    <ClInclude Include="Executes\ExeDice.h">
+      <Filter>Executes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renders\Shader.cpp">
@@ -171,6 +177,12 @@
       <Filter>Executes</Filter>
     </ClCompile>
     <ClCompile Include="Executes\ExeTexture.cpp">
+      <Filter>Executes</Filter>
+    </ClCompile>
+    <ClCompile Include="Executes\ExeKorea.cpp">
+      <Filter>Executes</Filter>
+    </ClCompile>
+    <ClCompile Include="Executes\ExeDice.cpp">
       <Filter>Executes</Filter>
     </ClCompile>
   </ItemGroup>

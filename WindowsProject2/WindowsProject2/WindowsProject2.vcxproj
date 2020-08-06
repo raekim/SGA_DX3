@@ -161,6 +161,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Executes\Execute.h" />
+    <ClInclude Include="Executes\ExeDice.h" />
+    <ClInclude Include="Executes\ExeKorea.h" />
     <ClInclude Include="Executes\ExeTexture.h" />
     <ClInclude Include="Executes\ExeTriangle.h" />
     <ClInclude Include="Executes\ExeUVAnimation.h" />
@@ -189,6 +191,8 @@
     <ClInclude Include="Main.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Executes\ExeDice.cpp" />
+    <ClCompile Include="Executes\ExeKorea.cpp" />
     <ClCompile Include="Executes\ExeTexture.cpp" />
     <ClCompile Include="Executes\ExeTriangle.cpp" />
     <ClCompile Include="Executes\ExeUVAnimation.cpp" />

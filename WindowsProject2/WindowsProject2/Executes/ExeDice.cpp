@@ -1,7 +1,7 @@
 #include "framework.h"
-#include "ExeTexture.h"
+#include "ExeDice.h"
 
-ExeTexture::ExeTexture(ExecuteValues * values) : Execute(values), vertexCount(4), indexCount(6), number(0),
+ExeDice::ExeDice(ExecuteValues * values) : Execute(values), vertexCount(8), indexCount(6*6), number(0),
 number2(0), location(0,0), rotation(0,0,0), scale(1,1)
 {
 	shader = new Shader(Shaders + L"006_TextureUv.hlsl");
@@ -11,15 +11,18 @@ number2(0), location(0,0), rotation(0,0,0), scale(1,1)
 	colorBuffer = new ColorBuffer();
 
 	vertices = new VertexTexture[vertexCount];
-
 	{
-		float side = 1;
-		float height = (sqrt(3) / 2)*side;
+		float side = 1.0f;
+		float halfSide = side / 2;
 
-		vertices[0].Position = D3DXVECTOR3(-0.5f, -0.5f, 0);
-		vertices[1].Position = D3DXVECTOR3(-0.5f, 0.5f, 0);
-		vertices[2].Position = D3DXVECTOR3(0.5f, -0.5f, 0);
-		vertices[3].Position = D3DXVECTOR3(0.5f, 0.5f, 0);
+		vertices[0].Position = D3DXVECTOR3(-halfSide, -halfSide, 0);
+		vertices[1].Position = D3DXVECTOR3(-halfSide, halfSide, 0);
+		vertices[2].Position = D3DXVECTOR3(halfSide, halfSide, 0);
+		vertices[3].Position = D3DXVECTOR3(halfSide, -halfSide, 0);
+		vertices[4].Position = D3DXVECTOR3(-halfSide, -halfSide, -side);
+		vertices[5].Position = D3DXVECTOR3(-halfSide, halfSide, -side);
+		vertices[6].Position = D3DXVECTOR3(halfSide, halfSide, -side);
+		vertices[7].Position = D3DXVECTOR3(halfSide, -halfSide, -side);
 
 		vertices[0].Uv = D3DXVECTOR2(0, 1);
 		vertices[1].Uv = D3DXVECTOR2(0, 0);
@@ -27,7 +30,14 @@ number2(0), location(0,0), rotation(0,0,0), scale(1,1)
 		vertices[3].Uv = D3DXVECTOR2(1, 0);
 	}
 
-	indices = new UINT[indexCount]{ 0,1,2, 2,1,3 };
+	indices = new UINT[indexCount]{
+		0,1,2, 2,1,3,	// front
+		0,1,2, 2,1,3,	// back
+		0,1,2, 2,1,3,	// top
+		0,1,2, 2,1,3,	// bottom
+		0,1,2, 2,1,3,	// left
+		0,1,2, 2,1,3,	// right
+	};
 
 	// Sampler State ¼³Á¤
 	{
@@ -105,7 +115,7 @@ number2(0), location(0,0), rotation(0,0,0), scale(1,1)
 	}
 }
 
-ExeTexture::~ExeTexture()
+ExeDice::~ExeDice()
 {
 	SAFE_RELEASE(indexBuffer);
 	SAFE_RELEASE(vertexBuffer);
@@ -118,7 +128,7 @@ ExeTexture::~ExeTexture()
 	SAFE_DELETE(shader);
 }
 
-void ExeTexture::Update()
+void ExeDice::Update()
 {
 	//D3D::GetDC()->UpdateSubresource(vertexBuffer, 0, NULL, vertices, sizeof(VertexColor)*vertexCount, 0);
 
@@ -178,11 +188,11 @@ void ExeTexture::Update()
 	world = Y * Z * T;
 }
 
-void ExeTexture::PreRender()
+void ExeDice::PreRender()
 {
 }
 
-void ExeTexture::Render()
+void ExeDice::Render()
 {
 	UINT stride = sizeof(VertexTexture);
 	UINT offset = 0;
@@ -234,7 +244,7 @@ void ExeTexture::Render()
 	D3D::GetDC()->DrawIndexed(indexCount, 0, 0);
 }	
 
-void ExeTexture::PostRender()
+void ExeDice::PostRender()
 {
 	ImGui::Begin("Color");
 	{
@@ -244,6 +254,6 @@ void ExeTexture::PostRender()
 	ImGui::End();
 }
 
-void ExeTexture::ResizeScreen()
+void ExeDice::ResizeScreen()
 {
 }
