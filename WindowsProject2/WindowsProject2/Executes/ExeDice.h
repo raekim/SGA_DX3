@@ -33,18 +33,17 @@ private:
 	ColorBuffer * colorBuffer;
 
 	ID3D11ShaderResourceView * srv;
-	ID3D11ShaderResourceView * srv2;
-
-	ID3D11SamplerState * state[5];
 
 	D3DXVECTOR2 location;
 	D3DXVECTOR3 rotation;
 	D3DXVECTOR2 scale;
+	float rotateSpeed;
 
 	D3DXMATRIX world;
 	int number2;
 
-	ID3D11RasterizerState* rasterizer[2];
+	ID3D11SamplerState * state[5];
+	ID3D11RasterizerState* rasterizer[2];	// 와이어프레임을 위함
 private:
 	class ColorBuffer : public ShaderBuffer 
 	{
