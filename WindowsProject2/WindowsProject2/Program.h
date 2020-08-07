@@ -1,5 +1,6 @@
 #pragma once
 
+
 class Program
 {
 public:
@@ -18,8 +19,4 @@ private:
 	ExecuteValues* values;
 	vector<class Execute *> executes;
 
-	D3DXMATRIX view;
-
-	D3DXVECTOR3 position;
-	D3DXVECTOR3 rotation;
 };

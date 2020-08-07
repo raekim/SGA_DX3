@@ -2,6 +2,7 @@
 
 #include "../Viewer/Perspective.h"
 #include "../Viewer/Viewport.h"
+#include "../Viewer/Camera.h"
 
 struct ExecuteValues
 {
@@ -9,6 +10,7 @@ struct ExecuteValues
 
 	class Perspective* Perspective;
 	class Viewport* Viewport;
+	class Camera* MainCamera;
 };
 
 class Execute
