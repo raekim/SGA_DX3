@@ -105,16 +105,10 @@
     <ClInclude Include="Executes\ExeTriangle.h">
       <Filter>Executes</Filter>
     </ClInclude>
-    <ClInclude Include="Executes\ExeUVAnimation.h">
-      <Filter>Executes</Filter>
-    </ClInclude>
     <ClInclude Include="Executes\ExeTexture.h">
       <Filter>Executes</Filter>
     </ClInclude>
-    <ClInclude Include="Executes\ExeKorea.h">
-      <Filter>Executes</Filter>
-    </ClInclude>
-    <ClInclude Include="Executes\ExeDice.h">
+    <ClInclude Include="Executes\ExeGrid.h">
       <Filter>Executes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -173,16 +167,10 @@
     <ClCompile Include="Executes\ExeTriangle.cpp">
       <Filter>Executes</Filter>
     </ClCompile>
-    <ClCompile Include="Executes\ExeUVAnimation.cpp">
-      <Filter>Executes</Filter>
-    </ClCompile>
     <ClCompile Include="Executes\ExeTexture.cpp">
       <Filter>Executes</Filter>
     </ClCompile>
-    <ClCompile Include="Executes\ExeKorea.cpp">
-      <Filter>Executes</Filter>
-    </ClCompile>
-    <ClCompile Include="Executes\ExeDice.cpp">
+    <ClCompile Include="Executes\ExeGrid.cpp">
       <Filter>Executes</Filter>
     </ClCompile>
   </ItemGroup>

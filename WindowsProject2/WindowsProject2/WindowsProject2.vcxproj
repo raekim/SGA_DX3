@@ -161,11 +161,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Executes\Execute.h" />
-    <ClInclude Include="Executes\ExeDice.h" />
-    <ClInclude Include="Executes\ExeKorea.h" />
+    <ClInclude Include="Executes\ExeGrid.h" />
     <ClInclude Include="Executes\ExeTexture.h" />
     <ClInclude Include="Executes\ExeTriangle.h" />
-    <ClInclude Include="Executes\ExeUVAnimation.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Renders\GlobalBuffers.h" />
@@ -191,11 +189,9 @@
     <ClInclude Include="Main.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Executes\ExeDice.cpp" />
-    <ClCompile Include="Executes\ExeKorea.cpp" />
+    <ClCompile Include="Executes\ExeGrid.cpp" />
     <ClCompile Include="Executes\ExeTexture.cpp" />
     <ClCompile Include="Executes\ExeTriangle.cpp" />
-    <ClCompile Include="Executes\ExeUVAnimation.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Renders\Shader.cpp" />
     <ClCompile Include="Renders\States.cpp" />

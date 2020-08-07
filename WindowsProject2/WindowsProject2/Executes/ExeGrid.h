@@ -1,14 +1,13 @@
 #pragma once
 #include "Execute.h"
 
-class ExeDice : public Execute
+class ExeGrid : public Execute
 {
 private:
 	class ColorBuffer;
-	int number;
 public:
-	ExeDice(ExecuteValues* values);
-	~ExeDice();
+	ExeGrid(ExecuteValues* values);
+	~ExeGrid();
 
 	void Update();
 
@@ -22,28 +21,21 @@ private:
 	Shader * shader;
 	WorldBuffer *worldBuffer;
 
+	UINT width, height;
+
 	ID3D11Buffer* vertexBuffer;
 	ID3D11Buffer* indexBuffer;
 
 	UINT vertexCount, indexCount;
 
-	VertexTexture* vertices;
+	VertexColor* vertices;
 	UINT* indices;
 
 	ColorBuffer * colorBuffer;
 
-	ID3D11ShaderResourceView * srv;
+	int fillModeNumber;
 
-	D3DXVECTOR2 location;
-	D3DXVECTOR3 rotation;
-	D3DXVECTOR2 scale;
-	float rotateSpeed;
-
-	D3DXMATRIX world;
-	int number2;
-
-	ID3D11SamplerState * state[5];
-	ID3D11RasterizerState* rasterizer[2];	// 와이어프레임을 위함
+	ID3D11RasterizerState* fillMode[2];
 private:
 	class ColorBuffer : public ShaderBuffer 
 	{
