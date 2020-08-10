@@ -23,25 +23,22 @@ void Freedom::Update()
 		D3DXVECTOR3 position;
 		Position(&position);
 
-		if (Mouse::Get()->Press(1))
-		{
-			if (Keyboard::Get()->Press('W'))
-				position += forward * moveSpeed * Time::Delta();
-			else if (Keyboard::Get()->Press('S'))
-				position += -forward * moveSpeed * Time::Delta();
+		if (Keyboard::Get()->Press('W'))
+			position += forward * moveSpeed * Time::Delta();
+		else if (Keyboard::Get()->Press('S'))
+			position += -forward * moveSpeed * Time::Delta();
 
-			if (Keyboard::Get()->Press('A'))
-				position += -right * moveSpeed * Time::Delta();
-			else if (Keyboard::Get()->Press('D'))
-				position += right * moveSpeed * Time::Delta();
+		if (Keyboard::Get()->Press('A'))
+			position += -right * moveSpeed * Time::Delta();
+		else if (Keyboard::Get()->Press('D'))
+			position += right * moveSpeed * Time::Delta();
 
-			if (Keyboard::Get()->Press('E'))
-				position += up * moveSpeed * Time::Delta();
-			else if (Keyboard::Get()->Press('Q'))
-				position += -up * moveSpeed * Time::Delta();
+		if (Keyboard::Get()->Press('E'))
+			position += up * moveSpeed * Time::Delta();
+		else if (Keyboard::Get()->Press('Q'))
+			position += -up * moveSpeed * Time::Delta();
 
-			Position(position.x, position.y, position.z);
-		}
+		Position(position.x, position.y, position.z);
 	}
 
 	//회전처리
