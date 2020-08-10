@@ -8,20 +8,27 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 
 	vector<D3DXCOLOR> heights;
 	heightMap->ReadPixels(DXGI_FORMAT_R8G8B8A8_UNORM, &heights);
+
 	// 텍스쳐 이미지의 픽셀 수 만큼 버텍스를 만들기 위함
 	width = heightMap->GetWidth() - 1;
 	height = heightMap->GetHeight() - 1;
 
-	shader = new Shader(Shaders + L"010_HeightMap.hlsl");
+	shader = new Shader(Shaders + L"011_Splatting.hlsl");
 
 	worldBuffer = new WorldBuffer();
 
 	colorBuffer = new ColorBuffer();
 
+	//texture[0] = new Texture(Textures + L"Dirt.png");
+	//texture[1] = new Texture(Textures + L"Wall.png");
+	texture[0] = new Texture(Textures + L"map.jpg");
+	texture[1] = new Texture(Textures + L"map2.jpg");
+	texture[2] = new Texture(Contents + L"HeightMaps/diagonal.png");
+
 	// Create VertexData
 	{
 		vertexCount = (width + 1) * (height + 1);
-		vertices = new VertexColor[vertexCount];
+		vertices = new VertexType[vertexCount];
 
 		for (UINT z = 0; z <= height; ++z)
 		{
@@ -29,12 +36,13 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 			{
 				UINT index = (width + 1) * z + x;
 
-				vertices[index].Position.x = (float)x; // (float)x * (unit meter)
+				vertices[index].Position.x = (float)x;
 				// (255/7.5 = 34) 까지 높이를 256 단계로 나눠서 높이로 입력
 				vertices[index].Position.y = (float)(heights[index].r * 255.0f) / 7.5f;
 				vertices[index].Position.z = (float)z;
 
-				vertices[index].Color = D3DXCOLOR(1, 1, 1, 1);
+				vertices[index].Uv.x = (float)(width - x) / width;
+				vertices[index].Uv.y = (float)z / height;
 			}
 		}
 	}
@@ -65,7 +73,7 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 	{
 		D3D11_BUFFER_DESC desc = { 0 };
 		desc.Usage = D3D11_USAGE_DEFAULT;
-		desc.ByteWidth = sizeof(VertexColor) * vertexCount;
+		desc.ByteWidth = sizeof(VertexType) * vertexCount;
 		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
 		D3D11_SUBRESOURCE_DATA data = { 0 };
@@ -87,15 +95,6 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 
 		HRESULT hr = D3D::GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
 		assert(SUCCEEDED(hr));
-	}
-
-	{
-		D3D11_RASTERIZER_DESC desc;
-		States::GetRasterizerDesc(&desc);
-		States::CreateRasterizer(&desc, &fillMode[0]);
-
-		desc.FillMode = D3D11_FILL_WIREFRAME;
-		States::CreateRasterizer(&desc, &fillMode[1]);
 	}
 }
 
@@ -123,7 +122,7 @@ void ExeGrid::PreRender()
 
 void ExeGrid::Render()
 {
-	UINT stride = sizeof(VertexColor);
+	UINT stride = sizeof(VertexType);
 	UINT offset = 0;
 
 	// IA : Input-Assembler Stage
@@ -131,7 +130,7 @@ void ExeGrid::Render()
 	D3D::GetDC()->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	D3D::GetDC()->RSSetState(fillMode[fillModeNumber]);
+	for(int i=0; i<3; ++i) texture[i]->SetShaderResource(i);
 
 	colorBuffer->SetPSBuffer(0);	// 셰이더의 컬러 constant 버퍼로 간다
 	worldBuffer->SetVSBuffer(1);
@@ -142,7 +141,6 @@ void ExeGrid::Render()
 
 void ExeGrid::PostRender()
 {
-	ImGui::SliderInt("wireframe", &fillModeNumber, 0, 1);
 }
 
 void ExeGrid::ResizeScreen()

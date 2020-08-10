@@ -5,6 +5,9 @@ class ExeGrid : public Execute
 {
 private:
 	class ColorBuffer;
+
+	typedef VertexTexture VertexType;
+
 public:
 	ExeGrid(ExecuteValues* values);
 	~ExeGrid();
@@ -28,14 +31,12 @@ private:
 
 	UINT vertexCount, indexCount;
 
-	VertexColor* vertices;
+	VertexType* vertices;
 	UINT* indices;
 
 	ColorBuffer * colorBuffer;
 
-	int fillModeNumber;
-
-	ID3D11RasterizerState* fillMode[2];
+	Texture* texture[3];
 private:
 	class ColorBuffer : public ShaderBuffer 
 	{

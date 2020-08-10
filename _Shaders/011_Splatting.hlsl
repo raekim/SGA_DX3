@@ -50,7 +50,7 @@ float4 PS(PixelInput input) : SV_TARGET
     float4 t2 = Map2.Sample(Sampler, input.uv);
     float4 alpha = Map3.Sample(Sampler, input.uv);
 
-    //return (1 - alpha.r) * t + t2 * alpha.r;
+    return (1 - alpha.r) * t + t2 * alpha.r;
 
-    return float4(1, 1, 1, 1);
+    //return float4(1, 1, 1, 1);
 }
