@@ -80,4 +80,6 @@ private:
 
 	D3DXMATRIX matRotation;
 	D3DXMATRIX matView;
+
+	D3DXVECTOR3 pivot;
 };

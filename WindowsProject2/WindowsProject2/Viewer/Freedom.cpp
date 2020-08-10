@@ -45,18 +45,18 @@ void Freedom::Update()
 	}
 
 	//회전처리
-	{
-		D3DXVECTOR2 rotation;
-		Rotation(&rotation);
-
-		if (Mouse::Get()->Press(1))
-		{
-			D3DXVECTOR3 val = Mouse::Get()->GetMoveValue();
-
-			rotation.x += val.y * rotationSpeed * Time::Delta();
-			rotation.y += val.x * rotationSpeed * Time::Delta();
-		}
-
-		Rotation(rotation.x, rotation.y);
-	}
+	//{
+	//	D3DXVECTOR2 rotation;
+	//	Rotation(&rotation);
+	//
+	//	if (Mouse::Get()->Press(1))
+	//	{
+	//		D3DXVECTOR3 val = Mouse::Get()->GetMoveValue();
+	//
+	//		rotation.x += val.y * rotationSpeed * Time::Delta();
+	//		rotation.y += val.x * rotationSpeed * Time::Delta();
+	//	}
+	//
+	//	Rotation(rotation.x, rotation.y);
+	//}
 }
