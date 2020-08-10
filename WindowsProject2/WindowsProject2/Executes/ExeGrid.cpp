@@ -2,10 +2,17 @@
 #include "ExeGrid.h"
 
 ExeGrid::ExeGrid(ExecuteValues * values) 
-	: Execute(values), vertexCount(4), indexCount(6),
-width(50), height(50)
+	: Execute(values)
 {
-	shader = new Shader(Shaders + L"003_Color.hlsl");
+	Texture* heightMap = new Texture(Contents + L"HeightMaps/HeightMap.png");
+
+	vector<D3DXCOLOR> heights;
+	heightMap->ReadPixels(DXGI_FORMAT_R8G8B8A8_UNORM, &heights);
+	// 텍스쳐 이미지의 픽셀 수 만큼 버텍스를 만들기 위함
+	width = heightMap->GetWidth() - 1;
+	height = heightMap->GetHeight() - 1;
+
+	shader = new Shader(Shaders + L"010_HeightMap.hlsl");
 
 	worldBuffer = new WorldBuffer();
 
@@ -23,7 +30,8 @@ width(50), height(50)
 				UINT index = (width + 1) * z + x;
 
 				vertices[index].Position.x = (float)x; // (float)x * (unit meter)
-				vertices[index].Position.y = 0.0f;	// zx 평면이므로 y값은 항상 0
+				// (255/7.5 = 34) 까지 높이를 256 단계로 나눠서 높이로 입력
+				vertices[index].Position.y = (float)(heights[index].r * 255.0f) / 7.5f;
 				vertices[index].Position.z = (float)z;
 
 				vertices[index].Color = D3DXCOLOR(1, 1, 1, 1);

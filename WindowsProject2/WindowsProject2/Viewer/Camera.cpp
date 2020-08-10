@@ -36,14 +36,5 @@ void Camera::Rotation()
 
 void Camera::View()
 {
-	D3DXMatrixLookAtLH(&matView, &position, &pivot, &up); // pivot = (0, 0, 0)
-
-	// forward
-	forward = pivot - position;
-	D3DXVec3Normalize(&forward, &forward);
-
-	// right
-	D3DXVec3Cross(&right, &forward, &up);
-	D3DXVec3Normalize(&right, &right);
-	right = -right;
+	D3DXMatrixLookAtLH(&matView, &position, &(position + forward), &up);
 }

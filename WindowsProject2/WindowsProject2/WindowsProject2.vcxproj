@@ -170,6 +170,7 @@
     <ClInclude Include="Renders\Shader.h" />
     <ClInclude Include="Renders\ShaderBuffer.h" />
     <ClInclude Include="Renders\States.h" />
+    <ClInclude Include="Renders\Texture.h" />
     <ClInclude Include="Renders\VertexLayouts.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Systems\D3D.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Renders\Shader.cpp" />
     <ClCompile Include="Renders\States.cpp" />
+    <ClCompile Include="Renders\Texture.cpp" />
     <ClCompile Include="Systems\D3D.cpp" />
     <ClCompile Include="Systems\Keyboard.cpp" />
     <ClCompile Include="Systems\Mouse.cpp" />

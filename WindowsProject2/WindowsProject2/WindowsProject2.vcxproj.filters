@@ -117,6 +117,9 @@
     <ClInclude Include="Viewer\Freedom.h">
       <Filter>Viewer</Filter>
     </ClInclude>
+    <ClInclude Include="Renders\Texture.h">
+      <Filter>Renders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renders\Shader.cpp">
@@ -184,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="Viewer\Freedom.cpp">
       <Filter>Viewer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renders\Texture.cpp">
+      <Filter>Renders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
