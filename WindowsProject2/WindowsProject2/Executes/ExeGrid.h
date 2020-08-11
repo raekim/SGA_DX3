@@ -4,9 +4,7 @@
 class ExeGrid : public Execute
 {
 private:
-	class ColorBuffer;
-
-	typedef VertexTexture VertexType;
+	typedef VertexTextureNormal VertexType;
 
 public:
 	ExeGrid(ExecuteValues* values);
@@ -21,8 +19,8 @@ public:
 	void ResizeScreen();
 
 private:
-	Shader * shader;
-	WorldBuffer *worldBuffer;
+	Material* material;
+	WorldBuffer* worldBuffer;
 
 	UINT width, height;
 
@@ -34,28 +32,7 @@ private:
 	VertexType* vertices;
 	UINT* indices;
 
-	ColorBuffer * colorBuffer;
-
-	Texture* texture[3];
+	Texture* texture[2];
 private:
-	class ColorBuffer : public ShaderBuffer 
-	{
-	public:
-		ColorBuffer() : ShaderBuffer(&Data, sizeof(Data))
-		{
-			Data.Color = D3DXCOLOR(1, 1, 1, 1);
-		}
-
-		~ColorBuffer()
-		{
-
-		}
-
-		// struct과 정의됨과 동시에 Data라는 이름의 멤버변수를 정의
-		struct Struct 
-		{
-			D3DXCOLOR Color;
-			
-		}Data;
-	};
+	void CreateNormal();
 };

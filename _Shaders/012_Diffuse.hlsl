@@ -27,14 +27,14 @@ PixelInput VS(VertexTextureNormal input)
 
 float4 PS(PixelInput input) : SV_TARGET
 {
-    float4 t = DiffuseMap.Sample(DiffuseSampler, input.Uv);
+    float4 t = DiffuseMap.Sample(DiffuseSampler, input.Uv);	// 000_Header에서 가져온 DiffuseMap
     float4 t2 = Map2.Sample(DiffuseSampler, input.Uv);
     float4 alpha = Map3.Sample(DiffuseSampler, input.Uv);
 
     float4 diffuse = (1 - alpha.r) * t + t2 * alpha.r;
 
-    float4 color = 0;
-    DiffuseLight(color, diffuse, input.Normal);
+	float4 color = 0;
+	DiffuseLighting(color, diffuse, input.Normal);
 
     //return input.Normal * 0.5f + 0.5f;
     return color;

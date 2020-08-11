@@ -13,17 +13,13 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 	width = heightMap->GetWidth() - 1;
 	height = heightMap->GetHeight() - 1;
 
-	shader = new Shader(Shaders + L"011_Splatting.hlsl");
+	material = new Material(Shaders + L"012_Diffuse.hlsl");
+	material->SetDiffuseMap(Textures + L"Dirt.png");
 
 	worldBuffer = new WorldBuffer();
 
-	colorBuffer = new ColorBuffer();
-
-	//texture[0] = new Texture(Textures + L"Dirt.png");
-	//texture[1] = new Texture(Textures + L"Wall.png");
-	texture[0] = new Texture(Textures + L"map.jpg");
-	texture[1] = new Texture(Textures + L"map2.jpg");
-	texture[2] = new Texture(Contents + L"HeightMaps/diagonal.png");
+	texture[0] = new Texture(Textures + L"Wall.png");
+	texture[1] = new Texture(Contents + L"HeightMaps/AlphaMap.png");
 
 	// Create VertexData
 	{
@@ -69,6 +65,9 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 		}
 	}
 
+	// 정점들에 대한 노말값 계산
+	CreateNormal();
+
 	// CreateVertexBuffer;
 	{
 		D3D11_BUFFER_DESC desc = { 0 };
@@ -82,6 +81,8 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 		HRESULT hr = D3D::GetDevice()->CreateBuffer(&desc, &data, &vertexBuffer);
 		assert(SUCCEEDED(hr));
 	}
+
+	
 
 	// CreateIndexBuffer;
 	{
@@ -106,9 +107,8 @@ ExeGrid::~ExeGrid()
 	SAFE_DELETE_ARRAY(indices);
 	SAFE_DELETE_ARRAY(vertices);
 
-	SAFE_DELETE(colorBuffer);
 	SAFE_DELETE(worldBuffer);
-	SAFE_DELETE(shader);
+	SAFE_DELETE(material);
 }
 
 void ExeGrid::Update()
@@ -130,19 +130,52 @@ void ExeGrid::Render()
 	D3D::GetDC()->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	for(int i=0; i<3; ++i) texture[i]->SetShaderResource(i);
+	texture[0]->SetShaderResource(1);
+	texture[1]->SetShaderResource(2);
 
-	colorBuffer->SetPSBuffer(0);	// 셰이더의 컬러 constant 버퍼로 간다
+	material->PSSetBuffer();
 	worldBuffer->SetVSBuffer(1);
-	shader->Render();
 
 	D3D::GetDC()->DrawIndexed(indexCount, 0, 0);
 }	
 
 void ExeGrid::PostRender()
 {
+	ImGui::SliderFloat3("Diffuse", (float*)material->GetDiffuse(), 0, 1);
 }
 
 void ExeGrid::ResizeScreen()
 {
+}
+
+void ExeGrid::CreateNormal()
+{
+	// 정점의 노말 벡터 구하기
+	// 그 점이 속한 면들이 가진 모든 노말벡터를 합한 값
+	for (UINT i = 0; i < (indexCount / 3); ++i)
+	{
+		UINT index0 = indices[i * 3 + 0];
+		UINT index1 = indices[i * 3 + 1];
+		UINT index2 = indices[i * 3 + 2];
+
+		VertexTextureNormal v0 = vertices[index0];
+		VertexTextureNormal v1 = vertices[index1];
+		VertexTextureNormal v2 = vertices[index2];
+
+		D3DXVECTOR3 d1 = v1.Position - v0.Position;
+		D3DXVECTOR3 d2 = v2.Position - v0.Position;
+
+		D3DXVECTOR3 normal;
+		D3DXVec3Cross(&normal, &d1, &d2);
+
+		// 더해 줌
+		vertices[index0].Normal += normal;
+		vertices[index1].Normal += normal;
+		vertices[index2].Normal += normal;
+	}
+
+	for (UINT i = 0; i < vertexCount; ++i)
+	{
+		D3DXVec3Normalize(&vertices[i].Normal, &vertices[i].Normal);
+	}
 }

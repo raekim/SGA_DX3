@@ -77,6 +77,7 @@ const wstring Contents = L"../../_Contents/";
 #include "./Renders/ShaderBuffer.h"
 #include "./Renders/GlobalBuffers.h"
 #include "./Renders/Texture.h"
+#include "./Renders/Material.h"
 
 #include "./Executes/Execute.h"
 

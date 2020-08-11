@@ -12,6 +12,7 @@ Program::Program()
 
 	values = new ExecuteValues();
 	values->ViewProjection = new ViewProjectionBuffer();
+	values->GlobalLight = new LightBuffer();
 	values->Perspective = new Perspective(desc.Width, desc.Height);
 	values->Viewport = new Viewport(desc.Width, desc.Height);
 
@@ -27,6 +28,7 @@ Program::~Program()
 		SAFE_DELETE(exe);
 
 	SAFE_DELETE(values->ViewProjection);
+	SAFE_DELETE(values->GlobalLight);
 	SAFE_DELETE(values->Perspective);
 	SAFE_DELETE(values->Viewport);
 	SAFE_DELETE(values);
@@ -57,6 +59,8 @@ void Program::Render()
 	values->ViewProjection->SetProjection(projection);
 	values->ViewProjection->SetVSBuffer(0);
 
+	values->GlobalLight->SetPSBuffer(0);
+
 	for (Execute* exe : executes)
 		exe->Render();
 }
@@ -66,6 +70,7 @@ void Program::PostRender()
 	for (Execute* exe : executes)
 		exe->PostRender();
 
+	ImGui::SliderFloat3("Direction", (float*)&values->GlobalLight->Data.Direction, -1, 1);
 	ImGui::Text("FPS : %f", Time::Get()->FPS());
 }
 

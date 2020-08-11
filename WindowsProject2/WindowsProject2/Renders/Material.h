@@ -42,6 +42,7 @@ private:
 	public:
 		Buffer() : ShaderBuffer(&Data, sizeof(Struct))
 		{
+			Data.Ambient = D3DXCOLOR(0, 0, 0, 1);
 			Data.Diffuse = D3DXCOLOR(1, 1, 1, 1);
 			Data.Specular = D3DXCOLOR(1, 1, 1, 1);
 
@@ -50,6 +51,7 @@ private:
 
 		struct Struct
 		{
+			D3DXCOLOR Ambient;
 			D3DXCOLOR Diffuse;
 			D3DXCOLOR Specular;
 
