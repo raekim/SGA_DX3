@@ -21,7 +21,9 @@ public:
 	void ResizeScreen();
 
 private:
-	Shader * shader;
+	int shaderSelectNum;
+
+	Shader * shader[2];
 	WorldBuffer *worldBuffer;
 
 	UINT width, height;
@@ -36,7 +38,7 @@ private:
 
 	ColorBuffer * colorBuffer;
 
-	Texture* texture[3];
+	Texture* texture[4];
 private:
 	class ColorBuffer : public ShaderBuffer 
 	{

@@ -2,7 +2,7 @@
 #include "ExeGrid.h"
 
 ExeGrid::ExeGrid(ExecuteValues * values) 
-	: Execute(values)
+	: Execute(values), shaderSelectNum(0)
 {
 	Texture* heightMap = new Texture(Contents + L"HeightMaps/HeightMap.png");
 
@@ -13,17 +13,17 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 	width = heightMap->GetWidth() - 1;
 	height = heightMap->GetHeight() - 1;
 
-	shader = new Shader(Shaders + L"011_Splatting.hlsl");
+	shader[0] = new Shader(Shaders + L"010_MyHeightMap.hlsl");
+	shader[1] = new Shader(Shaders + L"010_MyHeightMap2.hlsl");
 
 	worldBuffer = new WorldBuffer();
 
 	colorBuffer = new ColorBuffer();
 
-	//texture[0] = new Texture(Textures + L"Dirt.png");
-	//texture[1] = new Texture(Textures + L"Wall.png");
-	texture[0] = new Texture(Textures + L"map.jpg");
-	texture[1] = new Texture(Textures + L"map2.jpg");
-	texture[2] = new Texture(Contents + L"HeightMaps/diagonal.png");
+	texture[0] = new Texture(Textures + L"Rock.png");
+	texture[1] = new Texture(Textures + L"Dirt.png");
+	texture[2] = new Texture(Textures + L"Grass.png");
+	texture[3] = new Texture(Contents + L"HeightMaps/AlphaMap.png");
 
 	// Create VertexData
 	{
@@ -37,11 +37,11 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 				UINT index = (width + 1) * z + x;
 
 				vertices[index].Position.x = (float)x;
-				// (255/7.5 = 34) 까지 높이를 256 단계로 나눠서 높이로 입력
-				vertices[index].Position.y = (float)(heights[index].r * 255.0f) / 7.5f;
+				// (255/7) 까지 높이를 256 단계로 나눠서 높이로 입력
+				vertices[index].Position.y = (float)(heights[index].r * 255.0f) / 7;
 				vertices[index].Position.z = (float)z;
 
-				vertices[index].Uv.x = (float)(width - x) / width;
+				vertices[index].Uv.x = (float)x / width; // (float)(width - x) / width;
 				vertices[index].Uv.y = (float)z / height;
 			}
 		}
@@ -108,7 +108,6 @@ ExeGrid::~ExeGrid()
 
 	SAFE_DELETE(colorBuffer);
 	SAFE_DELETE(worldBuffer);
-	SAFE_DELETE(shader);
 }
 
 void ExeGrid::Update()
@@ -130,17 +129,19 @@ void ExeGrid::Render()
 	D3D::GetDC()->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	for(int i=0; i<3; ++i) texture[i]->SetShaderResource(i);
+	// 풀, 땅, 바위, 알파맵 텍스쳐
+	for (int i = 0; i < 3 + shaderSelectNum; ++i) texture[i]->SetShaderResource(i);
 
 	colorBuffer->SetPSBuffer(0);	// 셰이더의 컬러 constant 버퍼로 간다
 	worldBuffer->SetVSBuffer(1);
-	shader->Render();
+	shader[shaderSelectNum]->Render();
 
 	D3D::GetDC()->DrawIndexed(indexCount, 0, 0);
 }	
 
 void ExeGrid::PostRender()
 {
+	ImGui::SliderInt("Shader Number", &shaderSelectNum, 0, 1);
 }
 
 void ExeGrid::ResizeScreen()
