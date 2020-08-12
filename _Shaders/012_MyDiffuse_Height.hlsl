@@ -2,6 +2,7 @@
 
 struct PixelInput
 {
+	float4 worldPosition : POSITION0;	// 높이 기준으로 삼기 위함
     float4 Position : SV_POSITION;
     float2 Uv : UV0;
     float3 Normal : NORMAL0;
@@ -14,6 +15,7 @@ PixelInput VS(VertexTextureNormal input)
 {
     PixelInput output;
 
+	output.worldPosition = input.Position;  // 높이 기준으로 삼기 위함
     output.Position = mul(input.Position, World);
     output.Position = mul(output.Position, View);
     output.Position = mul(output.Position, Projection);
@@ -27,15 +29,28 @@ PixelInput VS(VertexTextureNormal input)
 
 float4 PS(PixelInput input) : SV_TARGET
 {
-    float4 t = DiffuseMap.Sample(DiffuseSampler, input.Uv);
-    float4 t2 = Map2.Sample(DiffuseSampler, input.Uv);
-    float4 alpha = Map3.Sample(DiffuseSampler, input.Uv);
+	float4 diffuse;
 
-    float4 diffuse = (1 - alpha.r) * t + t2 * alpha.r;
+	float4 t = DiffuseMap.Sample(DiffuseSampler, input.Uv);
+	float4 t2 = Map2.Sample(DiffuseSampler, input.Uv);
+	float4 t3 = Map3.Sample(DiffuseSampler, input.Uv);
 
-    float4 color = 0;
+	if (input.worldPosition.y > 30)
+	{
+		diffuse = t3;
+	}
+	else if (input.worldPosition.y > 20)
+	{
+		diffuse = t2;
+	}
+	else
+	{
+		diffuse = t;
+	}
+
+	float4 color = 0;
 	DiffuseLighting(color, diffuse, input.Normal);
 
-    //return input.Normal * 0.5f + 0.5f;
-    return color;
+	//return input.Normal * 0.5f + 0.5f;
+	return color;
 }

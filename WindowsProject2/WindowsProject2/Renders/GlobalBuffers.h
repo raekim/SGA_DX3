@@ -65,22 +65,12 @@ public:
 	LightBuffer() : ShaderBuffer(&Data, sizeof(Struct))
 	{
 		Data.Direction = D3DXVECTOR3(-1, -1, -1);
-		Data.Color = D3DXCOLOR(1, 1, 1, 1);
-
-		Data.Overcast = 1;
-		Data.Intensity = 0.5f;
 	}
 
 	struct Struct
 	{
 		D3DXVECTOR3 Direction;
 		float Padding;
-
-		D3DXCOLOR Color;
-		
-		float Overcast;
-		float Intensity;
-		float Padding2[2];
 	};
 
 	Struct Data;

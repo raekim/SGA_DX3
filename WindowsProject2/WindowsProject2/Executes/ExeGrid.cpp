@@ -13,17 +13,17 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 	width = heightMap->GetWidth() - 1;
 	height = heightMap->GetHeight() - 1;
 
-	shader[0] = new Shader(Shaders + L"010_MyHeightMap.hlsl");
-	shader[1] = new Shader(Shaders + L"010_MyHeightMap2.hlsl");
+	material = new Material(Shaders + L"012_MyDiffuse_Height.hlsl");
+	material->SetDiffuseMap(Textures + L"Rock.png");
+
+	//shader[0] = new Shader(Shaders + L"010_MyHeightMap.hlsl");	// 높이에 따라 텍스쳐 변경
+	//shader[1] = new Shader(Shaders + L"010_MyHeightMap2.hlsl");	// 별도의 알파맵에 따라 텍스쳐 변경
 
 	worldBuffer = new WorldBuffer();
 
-	colorBuffer = new ColorBuffer();
-
-	texture[0] = new Texture(Textures + L"Rock.png");
-	texture[1] = new Texture(Textures + L"Dirt.png");
-	texture[2] = new Texture(Textures + L"Grass.png");
-	texture[3] = new Texture(Contents + L"HeightMaps/AlphaMap.png");
+	texture[0] = new Texture(Textures + L"Dirt.png");
+	texture[1] = new Texture(Textures + L"Grass.png");
+	//texture[2] = new Texture(Contents + L"HeightMaps/AlphaMap.png");
 
 	// Create VertexData
 	{
@@ -69,6 +69,8 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 		}
 	}
 
+	CreateNormal();
+
 	// CreateVertexBuffer;
 	{
 		D3D11_BUFFER_DESC desc = { 0 };
@@ -106,7 +108,6 @@ ExeGrid::~ExeGrid()
 	SAFE_DELETE_ARRAY(indices);
 	SAFE_DELETE_ARRAY(vertices);
 
-	SAFE_DELETE(colorBuffer);
 	SAFE_DELETE(worldBuffer);
 }
 
@@ -130,11 +131,13 @@ void ExeGrid::Render()
 	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// 풀, 땅, 바위, 알파맵 텍스쳐
-	for (int i = 0; i < 3 + shaderSelectNum; ++i) texture[i]->SetShaderResource(i);
+	//for (int i = 0; i < 3 + shaderSelectNum; ++i) texture[i]->SetShaderResource(i);
 
-	colorBuffer->SetPSBuffer(0);	// 셰이더의 컬러 constant 버퍼로 간다
+	texture[0]->SetShaderResource(1);
+	texture[1]->SetShaderResource(2);
+
+	material->PSSetBuffer();
 	worldBuffer->SetVSBuffer(1);
-	shader[shaderSelectNum]->Render();
 
 	D3D::GetDC()->DrawIndexed(indexCount, 0, 0);
 }	
@@ -142,8 +145,42 @@ void ExeGrid::Render()
 void ExeGrid::PostRender()
 {
 	ImGui::SliderInt("Shader Number", &shaderSelectNum, 0, 1);
+	ImGui::SliderFloat3("Diffuse", (float*)material->GetDiffuse(), 0, 1);
 }
 
 void ExeGrid::ResizeScreen()
 {
+}
+
+void ExeGrid::CreateNormal()
+{
+	// 정점의 노말 벡터 구하기
+	// 그 점이 속한 면들이 가진 모든 노말벡터를 합한 값
+	for (UINT i = 0; i < (indexCount / 3); ++i)
+	{
+		UINT index0 = indices[i * 3 + 0];
+		UINT index1 = indices[i * 3 + 1];
+		UINT index2 = indices[i * 3 + 2];
+
+		VertexTextureNormal v0 = vertices[index0];
+		VertexTextureNormal v1 = vertices[index1];
+		VertexTextureNormal v2 = vertices[index2];
+
+		D3DXVECTOR3 d1 = v1.Position - v0.Position;
+		D3DXVECTOR3 d2 = v2.Position - v0.Position;
+
+		D3DXVECTOR3 normal;
+		D3DXVec3Cross(&normal, &d1, &d2);
+
+		// 더해 줌
+		vertices[index0].Normal += normal;
+		vertices[index1].Normal += normal;
+		vertices[index2].Normal += normal;
+	}
+
+	// 길이 1인 벡터로 정규화
+	for (UINT i = 0; i < vertexCount; ++i)
+	{
+		D3DXVec3Normalize(&vertices[i].Normal, &vertices[i].Normal);
+	}
 }
