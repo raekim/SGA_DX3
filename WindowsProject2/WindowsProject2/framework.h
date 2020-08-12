@@ -58,9 +58,17 @@ using namespace std;
 #include <DirectXTex.h>
 #pragma comment(lib, "directxtex.lib")
 
+// Fbx SDK
+#define FBXSDK_SHARED
+#include <fbxsdk.h>
+#pragma comment(lib, "libfbxsdk.lib")
+using namespace fbxsdk;
+
 const wstring Shaders = L"../../_Shaders/";
 const wstring Textures = L"../../_Textures/";
 const wstring Contents = L"../../_Contents/";
+const wstring Assets = L"../../_Assets/";
+const wstring Models = L"../../_Models/";
 
 #define SAFE_RELEASE(p){if(p) {(p)->Release(); (p) = NULL;}}
 #define SAFE_DELETE(p){if(p) {delete (p); (p) = NULL;}}

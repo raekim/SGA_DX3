@@ -28,6 +28,9 @@
     <Filter Include="Renders">
       <UniqueIdentifier>{27f2b54f-b8c1-413b-a47a-b6be59194836}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fbx">
+      <UniqueIdentifier>{ec4553f0-9ef1-430f-9298-2e78b61d5b92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -108,9 +111,6 @@
     <ClInclude Include="Executes\ExeTexture.h">
       <Filter>Executes</Filter>
     </ClInclude>
-    <ClInclude Include="Executes\ExeGrid.h">
-      <Filter>Executes</Filter>
-    </ClInclude>
     <ClInclude Include="Viewer\Camera.h">
       <Filter>Viewer</Filter>
     </ClInclude>
@@ -122,6 +122,18 @@
     </ClInclude>
     <ClInclude Include="Renders\Material.h">
       <Filter>Renders</Filter>
+    </ClInclude>
+    <ClInclude Include="Fbx\Exporter.h">
+      <Filter>Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="Fbx\Type.h">
+      <Filter>Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="Fbx\Utility.h">
+      <Filter>Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="Executes\ExeExportModel.h">
+      <Filter>Executes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -182,9 +194,6 @@
     <ClCompile Include="Executes\ExeTexture.cpp">
       <Filter>Executes</Filter>
     </ClCompile>
-    <ClCompile Include="Executes\ExeGrid.cpp">
-      <Filter>Executes</Filter>
-    </ClCompile>
     <ClCompile Include="Viewer\Camera.cpp">
       <Filter>Viewer</Filter>
     </ClCompile>
@@ -196,6 +205,15 @@
     </ClCompile>
     <ClCompile Include="Renders\Material.cpp">
       <Filter>Renders</Filter>
+    </ClCompile>
+    <ClCompile Include="Fbx\Utility.cpp">
+      <Filter>Fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="Fbx\Exporter.cpp">
+      <Filter>Fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="Executes\ExeExportModel.cpp">
+      <Filter>Executes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

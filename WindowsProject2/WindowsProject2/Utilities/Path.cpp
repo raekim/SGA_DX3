@@ -236,3 +236,36 @@ void Path::GetFiles(vector<wstring>* files, wstring path, wstring filter, bool b
 		FindClose(handle);
 	}
 }
+
+void Path::CreateFolder(string path)
+{
+	CreateFolder(String::ToWString(path));
+}
+
+void Path::CreateFolder(wstring path)
+{
+	if (ExistDirectory(path) == false)
+	{
+		CreateDirectory(path.c_str(), NULL);
+	}
+}
+
+void Path::CreateFolders(string path)
+{
+	CreateFolders(String::ToWString(path));
+}
+
+void Path::CreateFolders(wstring path)
+{
+	String::Replace(&path, L"\\", L"/");	// 역슬래시를 '/'로 replace
+
+	vector<wstring> folders;
+	String::SplitString(&folders, path, L"/");
+
+	wstring temp = L"";
+	for (wstring folder : folders)
+	{
+		temp += folder + L"/";
+		CreateFolder(temp);
+	}
+}

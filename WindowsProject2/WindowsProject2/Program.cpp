@@ -1,7 +1,7 @@
 #include "framework.h"
 #include "Program.h"
 #include "./Viewer/Freedom.h"
-#include "Executes/ExeGrid.h"
+#include "Executes/ExeExportModel.h"
 
 Program::Program()
 {
@@ -19,7 +19,7 @@ Program::Program()
 	values->MainCamera = new Freedom();
 	values->MainCamera->Position(2.64f, 1.35f, -3.59f);
 
-	executes.push_back(new ExeGrid(values));
+	executes.push_back(new ExeExportModel(values));
 }
 
 Program::~Program()
