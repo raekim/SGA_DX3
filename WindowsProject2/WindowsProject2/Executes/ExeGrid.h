@@ -6,7 +6,7 @@ class ExeGrid : public Execute
 private:
 	typedef VertexTextureNormal VertexType;
 
-	int shaderSelectNum;
+	int materialSelectNum;
 public:
 	ExeGrid(ExecuteValues* values);
 	~ExeGrid();
@@ -20,7 +20,7 @@ public:
 	void ResizeScreen();
 
 private:
-	Material* material;
+	Material* material[2];
 	WorldBuffer *worldBuffer;
 
 	UINT width, height;
@@ -33,8 +33,7 @@ private:
 	VertexType* vertices;
 	UINT* indices;
 
-	Shader* shader[2];
-	Texture* texture[4];
+	Texture* texture[3];
 private:
 	void CreateNormal();
 };

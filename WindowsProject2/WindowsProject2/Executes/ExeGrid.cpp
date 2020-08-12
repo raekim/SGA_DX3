@@ -2,7 +2,7 @@
 #include "ExeGrid.h"
 
 ExeGrid::ExeGrid(ExecuteValues * values) 
-	: Execute(values), shaderSelectNum(0)
+	: Execute(values), materialSelectNum(0)
 {
 	Texture* heightMap = new Texture(Contents + L"HeightMaps/HeightMap.png");
 
@@ -13,17 +13,17 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 	width = heightMap->GetWidth() - 1;
 	height = heightMap->GetHeight() - 1;
 
-	material = new Material(Shaders + L"012_MyDiffuse_Height.hlsl");
-	material->SetDiffuseMap(Textures + L"Rock.png");
+	material[0] = new Material(Shaders + L"012_MyDiffuse_Height.hlsl");
+	material[0]->SetDiffuseMap(Textures + L"Rock.png");
 
-	//shader[0] = new Shader(Shaders + L"010_MyHeightMap.hlsl");	// 높이에 따라 텍스쳐 변경
-	//shader[1] = new Shader(Shaders + L"010_MyHeightMap2.hlsl");	// 별도의 알파맵에 따라 텍스쳐 변경
+	material[1] = new Material(Shaders + L"012_MyDiffuse_Alpha.hlsl");
+	material[1]->SetDiffuseMap(Textures + L"Rock.png");
 
 	worldBuffer = new WorldBuffer();
 
 	texture[0] = new Texture(Textures + L"Dirt.png");
 	texture[1] = new Texture(Textures + L"Grass.png");
-	//texture[2] = new Texture(Contents + L"HeightMaps/AlphaMap.png");
+	texture[2] = new Texture(Contents + L"HeightMaps/AlphaMap.png");
 
 	// Create VertexData
 	{
@@ -133,10 +133,19 @@ void ExeGrid::Render()
 	// 풀, 땅, 바위, 알파맵 텍스쳐
 	//for (int i = 0; i < 3 + shaderSelectNum; ++i) texture[i]->SetShaderResource(i);
 
-	texture[0]->SetShaderResource(1);
-	texture[1]->SetShaderResource(2);
+	if (materialSelectNum == 0)
+	{
+		texture[0]->SetShaderResource(1);
+		texture[1]->SetShaderResource(2);
+	}
+	else if (materialSelectNum == 1)
+	{
+		texture[0]->SetShaderResource(1);
+		texture[1]->SetShaderResource(2);
+		texture[2]->SetShaderResource(3);
+	}
 
-	material->PSSetBuffer();
+	material[materialSelectNum]->PSSetBuffer();
 	worldBuffer->SetVSBuffer(1);
 
 	D3D::GetDC()->DrawIndexed(indexCount, 0, 0);
@@ -144,8 +153,8 @@ void ExeGrid::Render()
 
 void ExeGrid::PostRender()
 {
-	ImGui::SliderInt("Shader Number", &shaderSelectNum, 0, 1);
-	ImGui::SliderFloat3("Diffuse", (float*)material->GetDiffuse(), 0, 1);
+	ImGui::SliderInt("Shader Number", &materialSelectNum, 0, 1);
+	ImGui::SliderFloat3("Diffuse", (float*)material[materialSelectNum]->GetDiffuse(), 0, 1);
 }
 
 void ExeGrid::ResizeScreen()
