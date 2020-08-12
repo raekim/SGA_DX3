@@ -74,3 +74,13 @@ string Fbx::Utility::GetTextureFile(FbxProperty & prop)
 
 	return "";
 }
+
+string Fbx::Utility::GetMaterialName(FbxMesh * mesh, int polygonIndex, int cpIndex)
+{
+	return string();
+}
+
+D3DXVECTOR2 Fbx::Utility::GetUv(FbxMesh * mesh, int cpIndex, int uvIndex)
+{
+	return D3DXVECTOR2();
+}

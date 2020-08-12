@@ -94,3 +94,5 @@ const wstring Models = L"../../_Models/";
 #include "./Utilities/String.h"
 #include "./Utilities/Path.h"
 
+typedef VertexTextureNormal ModelVertexType;
+
