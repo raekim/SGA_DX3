@@ -44,6 +44,14 @@ void Fbx::Exporter::ExportMaterial(wstring saveFolder, wstring fileName)
 	WriteMaterial(saveFolder, fileName);
 }
 
+void Fbx::Exporter::ExportMesh(wstring saveFolder, wstring fileName)
+{
+	ReadBoneData(scene->GetRootNode(), -1, -1);
+	ReadSkinData();
+
+	WriteMeshData(saveFolder, fileName);
+}
+
 void Fbx::Exporter::ReadMaterial()
 {
 	int count = scene->GetMaterialCount();
@@ -111,6 +119,173 @@ void Fbx::Exporter::WriteMaterial(wstring saveFolder, wstring fileName)
 
 	string file = String::ToString(saveFolder + fileName);
 	document->SaveFile(file.c_str());
+}
+
+void Fbx::Exporter::ReadBoneData(FbxNode * node, int index, int parent)
+{
+	FbxNodeAttribute* attribute = node->GetNodeAttribute();
+
+	if (attribute != NULL)
+	{
+		FbxNodeAttribute::EType nodeType = attribute->GetAttributeType();
+
+		bool b = false;
+		b |= (nodeType == FbxNodeAttribute::eSkeleton);
+		b |= (nodeType == FbxNodeAttribute::eMesh);
+		b |= (nodeType == FbxNodeAttribute::eNull);
+		b |= (nodeType == FbxNodeAttribute::eMarker);
+
+		if (b == true)
+		{
+			FbxBoneData* bone = new FbxBoneData();
+			bone->Index = index;
+			bone->Parent = parent;
+			bone->Name = node->GetName();
+			bone->LocalTransform = Utility::ToMatrix(node->EvaluateLocalTransform());
+			bone->GlobalTransform = Utility::ToMatrix(node->EvaluateGlobalTransform());
+			boneDatas.push_back(bone);
+
+			if (nodeType == FbxNodeAttribute::eMesh)
+			{
+				converter->Triangulate(attribute, true, true);
+
+				ReadMeshData(node, index);
+			}
+		}//if(b)
+	}
+
+	for (int i = 0; i < node->GetChildCount(); i++)
+		ReadBoneData(node->GetChild(i), boneDatas.size(), index);
+}
+
+void Fbx::Exporter::ReadMeshData(FbxNode * node, int parentBone)
+{
+	FbxMesh* mesh = node->GetMesh();
+
+	vector<FbxVertex *> vertices;
+	for (int p = 0; p < mesh->GetPolygonCount(); p++)
+	{
+		int vertexInPolygon = mesh->GetPolygonSize(p);
+		assert(vertexInPolygon == 3);
+
+		for (int vi = vertexInPolygon - 1; vi >= 0; vi--)
+		{
+			FbxVertex* vertex = new FbxVertex();
+
+			int cpIndex = mesh->GetPolygonVertex(p, vi);
+			vertex->ControlPoint = cpIndex;
+
+
+			D3DXVECTOR3 temp;
+
+			FbxVector4 position = mesh->GetControlPointAt(cpIndex);
+			temp = Utility::ToVector3(position);
+			D3DXVec3TransformCoord(&vertex->Vertex.Position, &temp, &Utility::Negative());
+
+			FbxVector4 normal;
+			mesh->GetPolygonVertexNormal(p, vi, normal);
+			normal.Normalize();
+			temp = Utility::ToVector3(normal);
+			D3DXVec3TransformCoord(&vertex->Vertex.Normal, &temp, &Utility::Negative());
+
+
+			vertex->MaterialName = Utility::GetMaterialName(mesh, p, cpIndex);
+
+			int uvIndex = mesh->GetTextureUVIndex(p, vi);
+			vertex->Vertex.Uv = Utility::GetUv(mesh, cpIndex, uvIndex);
+
+			vertices.push_back(vertex);
+		}
+	}//for(p)
+
+	FbxMeshData* meshData = new FbxMeshData();
+	meshData->Name = node->GetName();
+	meshData->ParentBone = parentBone;
+	meshData->Vertices = vertices;
+	meshData->Mesh = mesh;
+	meshDatas.push_back(meshData);
+}
+
+void Fbx::Exporter::ReadSkinData()
+{
+	for (FbxMeshData* meshData : meshDatas)
+	{
+		for (int i = 0; i < scene->GetMaterialCount(); i++)
+		{
+			FbxSurfaceMaterial* material = scene->GetMaterial(i);
+			string materialName = material->GetName();
+
+			vector<FbxVertex *> gather;
+			for (FbxVertex* temp : meshData->Vertices)
+			{
+				if (temp->MaterialName == materialName)
+					gather.push_back(temp);
+			}
+			if (gather.size() < 1) continue;
+
+
+			FbxMeshPartData* meshPart = new FbxMeshPartData();
+			meshPart->MaterialName = materialName;
+
+			for (FbxVertex* temp : gather)
+			{
+				ModelVertexType vertex;
+				vertex = temp->Vertex;
+
+				meshPart->Vertices.push_back(vertex);
+				meshPart->Indices.push_back(meshPart->Indices.size());
+			}
+			meshData->MeshParts.push_back(meshPart);
+		}
+	}//for(MeshData)
+}
+
+void Fbx::Exporter::WriteMeshData(wstring saveFolder, wstring fileName)
+{
+	Path::CreateFolder(saveFolder);
+
+
+	BinaryWriter* w = new BinaryWriter();
+	w->Open(saveFolder + fileName);
+
+	w->UInt(boneDatas.size());
+	for (FbxBoneData* bone : boneDatas)
+	{
+		w->Int(bone->Index);
+		w->String(bone->Name);
+		w->Int(bone->Parent);
+
+		w->Matrix(bone->LocalTransform);
+		w->Matrix(bone->GlobalTransform);
+
+		SAFE_DELETE(bone);
+	}
+
+	w->UInt(meshDatas.size());
+	for (FbxMeshData* meshData : meshDatas)
+	{
+		w->String(meshData->Name);
+		w->Int(meshData->ParentBone);
+
+		w->UInt(meshData->MeshParts.size());
+		for (FbxMeshPartData* part : meshData->MeshParts)
+		{
+			w->String(part->MaterialName);
+
+			w->UInt(part->Vertices.size());
+			w->Byte(&part->Vertices[0], sizeof(ModelVertexType) * part->Vertices.size());
+
+			w->UInt(part->Indices.size());
+			w->Byte(&part->Indices[0], sizeof(UINT) * part->Indices.size());
+
+			SAFE_DELETE(part);
+		}
+
+		SAFE_DELETE(meshData);
+	}
+
+	w->Close();
+	SAFE_DELETE(w);
 }
 
 void Fbx::Exporter::WriteXmlColor(Xml::XMLDocument * document, Xml::XMLElement * element, D3DXCOLOR & color)
