@@ -1,7 +1,7 @@
 #include "framework.h"
-#include "ExeTriangle.h"
+#include "ExportMesh.h"
 
-ExeTriangle::ExeTriangle(ExecuteValues* values) : Execute(values), vertexCount(3), indexCount(3)
+ExportMesh::ExportMesh(ExecuteValues* values) : Execute(values), vertexCount(3), indexCount(3)
 {
 	shader = new Shader(Shaders + L"002_Vertex.hlsl");
 	worldBuffer = new WorldBuffer();
@@ -42,7 +42,7 @@ ExeTriangle::ExeTriangle(ExecuteValues* values) : Execute(values), vertexCount(3
 	}
 }
 
-ExeTriangle::~ExeTriangle()
+ExportMesh::~ExportMesh()
 {
 	SAFE_RELEASE(indexBuffer);
 	SAFE_RELEASE(vertexBuffer);
@@ -54,17 +54,17 @@ ExeTriangle::~ExeTriangle()
 	SAFE_DELETE(shader);
 }
 
-void ExeTriangle::Update() 
+void ExportMesh::Update() 
 {
 
 }
 
-void ExeTriangle::PreRender()
+void ExportMesh::PreRender()
 {
 
 }
 
-void ExeTriangle::Render()
+void ExportMesh::Render()
 {
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
@@ -80,12 +80,12 @@ void ExeTriangle::Render()
 	D3D::GetDC()->DrawIndexed(indexCount, 0, 0);
 }
 
-void ExeTriangle::PostRender()
+void ExportMesh::PostRender()
 {
 
 }
 
-void ExeTriangle::ResizeScreen()
+void ExportMesh::ResizeScreen()
 {
 
 }

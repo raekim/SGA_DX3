@@ -165,6 +165,9 @@
     <ClInclude Include="Objects\GameRender.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Executes\ExportMesh.h">
+      <Filter>Executes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renders\Shader.cpp">
@@ -265,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="Objects\GameModel.cpp">
       <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Executes\ExportMesh.cpp">
+      <Filter>Executes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

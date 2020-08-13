@@ -86,3 +86,23 @@ void Material::PSSetBuffer()
 
 	buffer->SetPSBuffer(1);
 }
+
+void Material::Clone(void ** clone)
+{
+	Material* material = new Material();
+	material->name = this->name;
+
+	if (this->shader != NULL)
+	{
+		material->SetShader(this->shader->GetFile());
+	}
+
+	material->SetDiffuse(*this->GetDiffuse());
+
+	if (this->diffuseMap != NULL)
+	{
+		material->SetDiffuseMap(this->diffuseMap->GetFile());
+	}
+
+	*clone = material;
+}

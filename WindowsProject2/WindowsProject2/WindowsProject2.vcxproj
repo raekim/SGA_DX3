@@ -164,6 +164,7 @@
     <ClInclude Include="Executes\ExeExportModel.h" />
     <ClInclude Include="Executes\ExeTexture.h" />
     <ClInclude Include="Executes\ExeTriangle.h" />
+    <ClInclude Include="Executes\ExportMesh.h" />
     <ClInclude Include="Fbx\Exporter.h" />
     <ClInclude Include="Fbx\Type.h" />
     <ClInclude Include="Fbx\Utility.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="Executes\ExeExportModel.cpp" />
     <ClCompile Include="Executes\ExeTexture.cpp" />
     <ClCompile Include="Executes\ExeTriangle.cpp" />
+    <ClCompile Include="Executes\ExportMesh.cpp" />
     <ClCompile Include="Fbx\Exporter.cpp" />
     <ClCompile Include="Fbx\Utility.cpp" />
     <ClCompile Include="Model\Model.cpp" />

@@ -1,6 +1,7 @@
 #pragma once
+#include "../Interfaces/ICloneable.h"
 
-class Material
+class Material : public ICloneable
 {
 private:
 	class Buffer;
@@ -30,6 +31,9 @@ public:
 	void SetDiffuseMap(wstring file, D3DX11_IMAGE_LOAD_INFO* info = NULL);
 
 	void PSSetBuffer();
+
+public:
+	void Clone(void** clone);
 
 private:
 	Buffer* buffer;

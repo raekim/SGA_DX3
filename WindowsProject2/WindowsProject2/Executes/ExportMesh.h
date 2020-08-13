@@ -2,11 +2,11 @@
 
 #include "Execute.h"
 
-class ExeTriangle : public Execute
+class ExportMesh : public Execute
 {
 public:
-	ExeTriangle(ExecuteValues* values);
-	~ExeTriangle();
+	ExportMesh(ExecuteValues* values);
+	~ExportMesh();
 
 	void Update();
 

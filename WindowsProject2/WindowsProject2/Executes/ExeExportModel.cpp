@@ -19,6 +19,11 @@ ExeExportModel::ExeExportModel(ExecuteValues* values) : Execute(values)
 	//SAFE_DELETE(exporter);
 
 	tank = new GameModel(Models + L"/Tank/", L"Tank.material", Models + L"/Tank/", L"Tank.mesh");
+
+	D3DXMATRIX R;
+	D3DXMatrixRotationY(&R, Math::ToRadian(90));
+
+	tank->RootAxis(R);
 }
 
 ExeExportModel::~ExeExportModel()
