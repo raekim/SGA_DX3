@@ -46,5 +46,7 @@ namespace Fbx
 	private:
 		vector<struct FbxMaterial *> materials;
 		vector<struct FbxBoneData *> boneDatas;
+
+		vector<struct FbxMeshData *> meshDatas;
 	};
 }
