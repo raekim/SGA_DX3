@@ -168,9 +168,9 @@ void DiffuseLighting(inout float4 color, float3 normal)
 
 void DiffuseLighting(inout float4 color, float4 diffuse, float3 normal)
 {
-	float intensity = saturate(dot(normal, Direction));
+    float intensity = saturate(dot(normal, -Direction));
 
-    color = color + Diffuse * diffuse * intensity;
+	color = color + Diffuse * diffuse * intensity * 100;
 }
 
 void SpecularLighting(inout float4 color, float3 normal, float3 viewDirection)

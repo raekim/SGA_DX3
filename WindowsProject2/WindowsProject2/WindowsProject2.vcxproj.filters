@@ -31,6 +31,15 @@
     <Filter Include="Fbx">
       <UniqueIdentifier>{ec4553f0-9ef1-430f-9298-2e78b61d5b92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interfaces">
+      <UniqueIdentifier>{64ce4bfb-893a-4a36-a206-dad80723ebf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{0e96c40f-8048-4202-94cf-e2f4c61369ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{b9a0f079-e286-46a9-a0c1-cc86c936e51f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -135,6 +144,27 @@
     <ClInclude Include="Executes\ExeExportModel.h">
       <Filter>Executes</Filter>
     </ClInclude>
+    <ClInclude Include="Interfaces\ICloneable.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\ModelBone.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\ModelMesh.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\ModelMeshPart.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Model.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GameModel.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GameRender.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renders\Shader.cpp">
@@ -214,6 +244,27 @@
     </ClCompile>
     <ClCompile Include="Executes\ExeExportModel.cpp">
       <Filter>Executes</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\ModelBone.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\ModelMesh.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\ModelMeshPart.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\ModelReader.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Model.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GameRender.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GameModel.cpp">
+      <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

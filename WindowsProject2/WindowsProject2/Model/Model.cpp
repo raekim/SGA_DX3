@@ -47,6 +47,8 @@ ModelMesh * Model::MeshByName(wstring name)
 		if (mesh->Name() == name)
 			return mesh;
 	}
+
+	return nullptr;
 }
 
 void Model::CopyGlobalBoneTo(vector<D3DXMATRIX>& transforms)

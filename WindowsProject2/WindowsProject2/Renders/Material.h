@@ -10,6 +10,9 @@ public:
 	Material(wstring shaderFile);
 	~Material();
 
+	void Name(wstring val) { name = val; }
+	wstring Name() { return name; }
+
 	Shader* GetShader() { return shader; }
 	void SetShader(string file);
 	void SetShader(wstring file);
@@ -30,6 +33,8 @@ public:
 
 private:
 	Buffer* buffer;
+
+	wstring name;
 
 	bool bShaderDelete;
 	Shader* shader;

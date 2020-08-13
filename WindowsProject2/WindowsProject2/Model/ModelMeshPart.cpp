@@ -56,5 +56,5 @@ void ModelMeshPart::Render()
 	D3D::GetDC()->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	D3D::GetDC()->DrawIndexed(indices.size(), 0, 0);;
+	D3D::GetDC()->DrawIndexed(indices.size(), 0, 0);
 }

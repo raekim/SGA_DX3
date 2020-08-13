@@ -17,5 +17,6 @@ public:
 	void ResizeScreen();
 
 private:
+	class GameModel* tank;
 };
 
