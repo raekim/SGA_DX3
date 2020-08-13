@@ -2,10 +2,9 @@
 #include "ExeGrid.h"
 
 ExeGrid::ExeGrid(ExecuteValues * values) 
-	: Execute(values), vertexCount(4), indexCount(6),
-width(50), height(50)
+	: Execute(values), width(8), height(8)
 {
-	shader = new Shader(Shaders + L"003_Color.hlsl");
+	shader = new Shader(Shaders + L"003_ChessBoard.hlsl");
 
 	worldBuffer = new WorldBuffer();
 
@@ -14,7 +13,7 @@ width(50), height(50)
 	// Create VertexData
 	{
 		vertexCount = (width + 1) * (height + 1);
-		vertices = new VertexColor[vertexCount];
+		vertices = new Vertex[vertexCount];
 
 		for (UINT z = 0; z <= height; ++z)
 		{
@@ -25,8 +24,6 @@ width(50), height(50)
 				vertices[index].Position.x = (float)x; // (float)x * (unit meter)
 				vertices[index].Position.y = 0.0f;	// zx 평면이므로 y값은 항상 0
 				vertices[index].Position.z = (float)z;
-
-				vertices[index].Color = D3DXCOLOR(1, 1, 1, 1);
 			}
 		}
 	}
@@ -57,7 +54,7 @@ width(50), height(50)
 	{
 		D3D11_BUFFER_DESC desc = { 0 };
 		desc.Usage = D3D11_USAGE_DEFAULT;
-		desc.ByteWidth = sizeof(VertexColor) * vertexCount;
+		desc.ByteWidth = sizeof(Vertex) * vertexCount;
 		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
 		D3D11_SUBRESOURCE_DATA data = { 0 };
@@ -115,7 +112,7 @@ void ExeGrid::PreRender()
 
 void ExeGrid::Render()
 {
-	UINT stride = sizeof(VertexColor);
+	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 
 	// IA : Input-Assembler Stage

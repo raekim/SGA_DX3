@@ -28,7 +28,7 @@ private:
 
 	UINT vertexCount, indexCount;
 
-	VertexColor* vertices;
+	Vertex* vertices;
 	UINT* indices;
 
 	ColorBuffer * colorBuffer;
