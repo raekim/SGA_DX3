@@ -38,6 +38,8 @@ ModelBone * Model::BoneByName(wstring name)
 		if (bone->Name() == name)
 			return bone;
 	}
+
+	return NULL;
 }
 
 ModelMesh * Model::MeshByName(wstring name)
@@ -48,7 +50,7 @@ ModelMesh * Model::MeshByName(wstring name)
 			return mesh;
 	}
 
-	return nullptr;
+	return NULL;
 }
 
 void Model::CopyGlobalBoneTo(vector<D3DXMATRIX>& transforms)
@@ -77,5 +79,29 @@ void Model::CopyGlobalBoneTo(vector<D3DXMATRIX>& transforms, D3DXMATRIX & w)
 		{
 			transforms[i] = bone->local * w;
 		}
+	}
+}
+
+void Models::Create()
+{
+}
+
+void Models::Delete()
+{
+	for (pair<wstring, vector<Material *>> temp : materialMap)
+	{
+		for (Material* material : temp.second)
+			SAFE_DELETE(material);
+	}
+
+	for (pair<wstring, MeshData> temp : meshDataMap)
+	{
+		MeshData data = temp.second;
+
+		for (ModelBone* bone : data.Bones)
+			SAFE_DELETE(bone);
+
+		for (ModelMesh* mesh : data.Meshes)
+			SAFE_DELETE(mesh);
 	}
 }

@@ -69,6 +69,7 @@ const wstring Textures = L"../../_Textures/";
 const wstring Contents = L"../../_Contents/";
 const wstring Assets = L"../../_Assets/";
 const wstring Models = L"../../_Models/";
+const wstring Materials = L"../../_Materials/";
 
 #define SAFE_RELEASE(p){if(p) {(p)->Release(); (p) = NULL;}}
 #define SAFE_DELETE(p){if(p) {delete (p); (p) = NULL;}}

@@ -26,6 +26,24 @@ void ModelMesh::Render()
 	}
 }
 
+void ModelMesh::Clone(void ** clone)
+{
+	ModelMesh* mesh = new ModelMesh();
+	mesh->name = name;
+	mesh->parentBoneIndex = parentBoneIndex;
+
+	for (ModelMeshPart* part : meshParts)
+	{
+		ModelMeshPart* temp = NULL;
+		part->Clone((void **)&temp);
+
+		temp->parent = mesh;
+		mesh->meshParts.push_back(temp);
+	}
+
+	*clone = mesh;
+}
+
 void ModelMesh::Binding()
 {
 	for (ModelMeshPart* part : meshParts)

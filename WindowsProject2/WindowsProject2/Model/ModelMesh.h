@@ -1,6 +1,7 @@
 #pragma once
+#include "../Interfaces/ICloneable.h"
 
-class ModelMesh
+class ModelMesh : public ICloneable
 {
 public:
 	friend class Model;
@@ -18,6 +19,9 @@ public:
 
 	int ParentBoneIndex() { return parentBoneIndex; }
 	class ModelBone* ParentBone() { return parentBone; }
+
+public:
+	void Clone(void** clone);
 
 private:
 	void Binding();

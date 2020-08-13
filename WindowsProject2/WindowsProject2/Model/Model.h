@@ -72,3 +72,30 @@ private:
 public:
 	BoneBuffer* Buffer() { return buffer; }
 };
+
+class Models
+{
+public:
+	friend class Model;
+
+public:
+	static void Create();
+	static void Delete();
+
+private:
+	static void LoadMaterial(wstring file, vector<Material *>* materials);
+	static void ReadMaterialData(wstring file);
+
+	static void LoadMesh(wstring file, vector<class ModelBone *>* bones, vector<class ModelMesh *>* meshes);
+	static void ReadMeshData(wstring file);
+
+private:
+	static map<wstring, vector<Material *>> materialMap;
+
+	struct MeshData
+	{
+		vector<class ModelBone *> Bones;
+		vector<class ModelMesh *> Meshes;
+	};
+	static map<wstring, MeshData> meshDataMap;
+};

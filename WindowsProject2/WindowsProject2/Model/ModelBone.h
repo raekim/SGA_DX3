@@ -1,6 +1,7 @@
 #pragma once
+#include "../Interfaces/ICloneable.h"
 
-class ModelBone
+class ModelBone : public ICloneable
 {
 public:
 	friend class Model;
@@ -28,6 +29,8 @@ public:
 	D3DXMATRIX& Global() { return global; }
 	void Global(D3DXMATRIX& matrix) { global = matrix; }
 
+public:
+	void Clone(void** clone);
 	
 private:
 	int index;
