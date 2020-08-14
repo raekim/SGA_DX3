@@ -163,7 +163,6 @@
     <ClInclude Include="Executes\Execute.h" />
     <ClInclude Include="Executes\ExeExportModel.h" />
     <ClInclude Include="Executes\ExeTexture.h" />
-    <ClInclude Include="Executes\ExeTriangle.h" />
     <ClInclude Include="Executes\ExportMesh.h" />
     <ClInclude Include="Fbx\Exporter.h" />
     <ClInclude Include="Fbx\Type.h" />
@@ -176,6 +175,9 @@
     <ClInclude Include="Model\ModelMeshPart.h" />
     <ClInclude Include="Objects\GameModel.h" />
     <ClInclude Include="Objects\GameRender.h" />
+    <ClInclude Include="Objects\GameTank.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Program.h" />
     <ClInclude Include="Renders\GlobalBuffers.h" />
     <ClInclude Include="Renders\Material.h" />
@@ -206,7 +208,6 @@
   <ItemGroup>
     <ClCompile Include="Executes\ExeExportModel.cpp" />
     <ClCompile Include="Executes\ExeTexture.cpp" />
-    <ClCompile Include="Executes\ExeTriangle.cpp" />
     <ClCompile Include="Executes\ExportMesh.cpp" />
     <ClCompile Include="Fbx\Exporter.cpp" />
     <ClCompile Include="Fbx\Utility.cpp" />
@@ -217,6 +218,9 @@
     <ClCompile Include="Model\ModelReader.cpp" />
     <ClCompile Include="Objects\GameModel.cpp" />
     <ClCompile Include="Objects\GameRender.cpp" />
+    <ClCompile Include="Objects\GameTank.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Renders\Material.cpp" />
     <ClCompile Include="Renders\Shader.cpp" />

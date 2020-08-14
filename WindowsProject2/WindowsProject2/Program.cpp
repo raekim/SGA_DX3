@@ -2,6 +2,8 @@
 #include "Program.h"
 #include "./Viewer/Freedom.h"
 #include "Executes/ExeExportModel.h"
+#include "Executes/ExportMesh.h"
+#include "Objects/GameTank.h"
 
 Program::Program()
 {
@@ -20,6 +22,7 @@ Program::Program()
 	values->MainCamera->Position(2.64f, 1.35f, -3.59f);
 
 	executes.push_back(new ExeExportModel(values));
+	executes.push_back(new ExportMesh(values));
 }
 
 Program::~Program()

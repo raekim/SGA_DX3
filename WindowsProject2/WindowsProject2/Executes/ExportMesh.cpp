@@ -1,62 +1,60 @@
 #include "framework.h"
 #include "ExportMesh.h"
+#include "../Fbx/Exporter.h"
+#include "../Objects/GameModel.h"
 
-ExportMesh::ExportMesh(ExecuteValues* values) : Execute(values), vertexCount(3), indexCount(3)
+ExportMesh::ExportMesh(ExecuteValues* values) : Execute(values)
 {
-	shader = new Shader(Shaders + L"002_Vertex.hlsl");
-	worldBuffer = new WorldBuffer();
+	Fbx::Exporter* exporter = NULL;
 	
-	vertices = new Vertex[vertexCount];
-	vertices[0].Position = D3DXVECTOR3(0, 0, 0);
-	vertices[1].Position = D3DXVECTOR3(0, 1, 0);
-	vertices[2].Position = D3DXVECTOR3(1, 0, 0);
+	vector<wstring> str = { L"Capsule", L"Cube", L"Cylinder", L"Plane", L"Quad", L"Sphere", L"Teapot"};
+	
+	//for (auto& modelName : str)
+	//{
+	//	exporter = new Fbx::Exporter(Assets + L"Meshes/" + modelName + L".fbx");
+	//
+	//	exporter->ExportMaterial(Materials + L"Meshes/", modelName + L".material");
+	//	exporter->ExportMesh(Models + L"Meshes/", modelName + L".mesh");
+	//
+	//	SAFE_DELETE(exporter);
+	//}
 
-	indices = new UINT[indexCount]{ 0,1,2 };
-
-	// CreateVertexBuffer;
+	for (int i = 0; i < 20; ++i)
 	{
-		D3D11_BUFFER_DESC desc = { 0 };
-		desc.Usage = D3D11_USAGE_DEFAULT;
-		desc.ByteWidth = sizeof(Vertex) * vertexCount;
-		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
-		D3D11_SUBRESOURCE_DATA data = { 0 };
-		data.pSysMem = vertices;
-		
-		HRESULT hr = D3D::GetDevice()->CreateBuffer(&desc, &data, &vertexBuffer);
-		assert(SUCCEEDED(hr));
+		GameModel* model = new GameModel(Materials + L"Meshes/", L"Teapot.material", Models + L"Meshes/", L"Teapot.mesh" );
+	
+		// ¸ðµ¨ À§Ä¡ ·£´ý ¼³Á¤
+		D3DXVECTOR3 temp;
+		temp.x = Math::Random(-20, 20);
+		temp.y = 0;
+		temp.z = Math::Random(-20, 20);
+		model->Position(temp);
+	
+		// ¸ðµ¨ È¸Àü ·£´ý ¼³Á¤
+		D3DXMATRIX R;
+		D3DXMatrixRotationY(&R, Math::ToRadian(Math::Random(-180, 180)));
+		model->RootAxis(R);
+	
+		models.push_back(model);
 	}
-
-	// CreateIndexBuffer;
-	{
-		D3D11_BUFFER_DESC desc = { 0 };
-		desc.Usage = D3D11_USAGE_DEFAULT;
-		desc.ByteWidth = sizeof(UINT) * indexCount;
-		desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-
-		D3D11_SUBRESOURCE_DATA data = { 0 };
-		data.pSysMem = indices;
-
-		HRESULT hr = D3D::GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
-		assert(SUCCEEDED(hr));
-	}
+	
+	Models::Delete();
 }
 
 ExportMesh::~ExportMesh()
 {
-	SAFE_RELEASE(indexBuffer);
-	SAFE_RELEASE(vertexBuffer);
-
-	SAFE_DELETE_ARRAY(indices);
-	SAFE_DELETE_ARRAY(vertices);
-
-	SAFE_DELETE(worldBuffer);
-	SAFE_DELETE(shader);
+	for (GameModel* model : models)
+	{
+		SAFE_DELETE(model);
+	}
 }
 
 void ExportMesh::Update() 
 {
-
+	for (GameModel* model : models)
+	{
+		model->Update();
+	}
 }
 
 void ExportMesh::PreRender()
@@ -66,18 +64,10 @@ void ExportMesh::PreRender()
 
 void ExportMesh::Render()
 {
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-
-	// IA : Input-Assembler Stage
-	D3D::GetDC()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	D3D::GetDC()->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	worldBuffer->SetVSBuffer(1);
-	shader->Render();
-
-	D3D::GetDC()->DrawIndexed(indexCount, 0, 0);
+	for (GameModel* model : models)
+	{
+		model->Render();
+	}
 }
 
 void ExportMesh::PostRender()

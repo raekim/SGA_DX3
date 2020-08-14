@@ -17,15 +17,6 @@ public:
 	void ResizeScreen();
 
 private:
-	Shader * shader;
-	WorldBuffer *worldBuffer;
-
-	ID3D11Buffer* vertexBuffer;
-	ID3D11Buffer* indexBuffer;
-
-	UINT vertexCount, indexCount;
-
-	Vertex* vertices;
-	UINT* indices;
+	vector<class GameModel*> models;
 };
 

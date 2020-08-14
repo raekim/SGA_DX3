@@ -1,7 +1,7 @@
 #include "framework.h"
 #include "ExeExportModel.h"
 #include "../Fbx/Exporter.h"
-#include "./Objects/GameModel.h"
+#include "./Objects/GameTank.h"
 
 ExeExportModel::ExeExportModel(ExecuteValues* values) : Execute(values)
 {
@@ -18,7 +18,7 @@ ExeExportModel::ExeExportModel(ExecuteValues* values) : Execute(values)
 	//exporter->ExportMesh(Models + L"/Tank/", L"Tank.mesh");
 	//SAFE_DELETE(exporter);
 
-	tank = new GameModel(Models + L"/Tank/", L"Tank.material", Models + L"/Tank/", L"Tank.mesh");
+	tank = new GameTank(Models + L"/Tank/", L"Tank.material");
 
 	D3DXMATRIX R;
 	D3DXMatrixRotationY(&R, Math::ToRadian(90));

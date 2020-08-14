@@ -124,11 +124,10 @@ void Models::ReadMaterialData(wstring file)
 		dxColor.a = color->FloatText();
 		material->SetDiffuse(dxColor);
 
-
 		node = node->NextSiblingElement();
+
 		wstring diffuseTexture = String::ToWString(node->GetText());
 
-		
 		wstring directory = Path::GetDirectoryName(file);
 		
 		if (diffuseTexture.length() > 0)

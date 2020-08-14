@@ -114,9 +114,6 @@
     <ClInclude Include="Program.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Executes\ExeTriangle.h">
-      <Filter>Executes</Filter>
-    </ClInclude>
     <ClInclude Include="Executes\ExeTexture.h">
       <Filter>Executes</Filter>
     </ClInclude>
@@ -159,14 +156,17 @@
     <ClInclude Include="Model\Model.h">
       <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\GameModel.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Objects\GameRender.h">
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Executes\ExportMesh.h">
       <Filter>Executes</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GameTank.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GameModel.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -221,9 +221,6 @@
     <ClCompile Include="Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Executes\ExeTriangle.cpp">
-      <Filter>Executes</Filter>
-    </ClCompile>
     <ClCompile Include="Executes\ExeTexture.cpp">
       <Filter>Executes</Filter>
     </ClCompile>
@@ -266,11 +263,14 @@
     <ClCompile Include="Objects\GameRender.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\GameModel.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Executes\ExportMesh.cpp">
       <Filter>Executes</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GameTank.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GameModel.cpp">
+      <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
