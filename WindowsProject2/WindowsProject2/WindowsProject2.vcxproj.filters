@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Utilities">
-      <UniqueIdentifier>{1e3bbac0-0b80-4059-816c-3979335f4a4e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Viewer">
       <UniqueIdentifier>{69d6c116-c77c-427d-aee0-6bd86c91bd58}</UniqueIdentifier>
     </Filter>
@@ -27,6 +24,9 @@
     </Filter>
     <Filter Include="Renders">
       <UniqueIdentifier>{27f2b54f-b8c1-413b-a47a-b6be59194836}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{1e3bbac0-0b80-4059-816c-3979335f4a4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

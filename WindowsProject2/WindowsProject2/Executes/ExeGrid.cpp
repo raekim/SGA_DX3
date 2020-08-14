@@ -4,26 +4,22 @@
 ExeGrid::ExeGrid(ExecuteValues * values) 
 	: Execute(values), materialSelectNum(0)
 {
-	Texture* heightMap = new Texture(Contents + L"HeightMaps/HeightMap.png");
+	Texture* heightMap = new Texture(Contents + L"HeightMaps/HeightMap_Edit.png");
 
 	vector<D3DXCOLOR> heights;
 	heightMap->ReadPixels(DXGI_FORMAT_R8G8B8A8_UNORM, &heights);
+	
+	int mul = 20;
 
-	// 텍스쳐 이미지의 픽셀 수 만큼 버텍스를 만들기 위함
-	width = heightMap->GetWidth() - 1;
-	height = heightMap->GetHeight() - 1;
+	width = heightMap->GetWidth() * mul - 1;
+	height = heightMap->GetHeight() * mul - 1;
 
-	material[0] = new Material(Shaders + L"012_MyDiffuse_Height.hlsl");
-	material[0]->SetDiffuseMap(Textures + L"Rock.png");
-
-	material[1] = new Material(Shaders + L"012_MyDiffuse_Alpha.hlsl");
-	material[1]->SetDiffuseMap(Textures + L"Rock.png");
+	material = new Material(Shaders + L"Floor.hlsl");
+	material->SetDiffuseMap(Textures + L"Floor.png");
 
 	worldBuffer = new WorldBuffer();
 
-	texture[0] = new Texture(Textures + L"Dirt.png");
-	texture[1] = new Texture(Textures + L"Grass.png");
-	texture[2] = new Texture(Contents + L"HeightMaps/AlphaMap.png");
+	texture = new Texture(Textures + L"Numbers.png");
 
 	// Create VertexData
 	{
@@ -34,15 +30,16 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 		{
 			for (UINT x = 0; x <= width; ++x)
 			{
-				UINT index = (width + 1) * z + x;
+				UINT index = (width + 1) * z + x; // 버텍스의 인덱스
+				UINT rIndex = 16 * (z / mul) + (x / mul);	// 컬러 r값 인덱스
 
 				vertices[index].Position.x = (float)x;
 				// (255/7) 까지 높이를 256 단계로 나눠서 높이로 입력
-				vertices[index].Position.y = (float)(heights[index].r * 255.0f) / 7;
+				vertices[index].Position.y = (float)(heights[rIndex].r * 255) / 25;
 				vertices[index].Position.z = (float)z;
 
-				vertices[index].Uv.x = (float)x / width; // (float)(width - x) / width;
-				vertices[index].Uv.y = (float)z / height;
+				vertices[index].Uv.x = (float)x / width;
+				vertices[index].Uv.y = height - (float)z / height;
 			}
 		}
 	}
@@ -70,6 +67,15 @@ ExeGrid::ExeGrid(ExecuteValues * values)
 	}
 
 	CreateNormal();
+
+	// Sampler State 설정 (floor 텍스쳐 반복을 위한 것)
+	{
+		D3D11_SAMPLER_DESC desc;
+		States::GetSamplerDesc(&desc);
+		desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		States::CreateSampler(&desc, &state);
+	}
 
 	// CreateVertexBuffer;
 	{
@@ -130,31 +136,18 @@ void ExeGrid::Render()
 	D3D::GetDC()->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// 풀, 땅, 바위, 알파맵 텍스쳐
-	//for (int i = 0; i < 3 + shaderSelectNum; ++i) texture[i]->SetShaderResource(i);
+	texture->SetShaderResource(1);
 
-	if (materialSelectNum == 0)
-	{
-		texture[0]->SetShaderResource(1);
-		texture[1]->SetShaderResource(2);
-	}
-	else if (materialSelectNum == 1)
-	{
-		texture[0]->SetShaderResource(1);
-		texture[1]->SetShaderResource(2);
-		texture[2]->SetShaderResource(3);
-	}
-
-	material[materialSelectNum]->PSSetBuffer();
+	material->PSSetBuffer();
 	worldBuffer->SetVSBuffer(1);
 
+	D3D::GetDC()->PSSetSamplers(0, 1, &state);
 	D3D::GetDC()->DrawIndexed(indexCount, 0, 0);
 }	
 
 void ExeGrid::PostRender()
 {
-	ImGui::SliderInt("Shader Number", &materialSelectNum, 0, 1);
-	ImGui::SliderFloat3("Diffuse", (float*)material[materialSelectNum]->GetDiffuse(), 0, 1);
+	ImGui::SliderFloat3("Diffuse", (float*)material->GetDiffuse(), 0, 1);
 }
 
 void ExeGrid::ResizeScreen()

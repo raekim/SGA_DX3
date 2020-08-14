@@ -20,7 +20,7 @@ public:
 	void ResizeScreen();
 
 private:
-	Material* material[2];
+	Material* material;
 	WorldBuffer *worldBuffer;
 
 	UINT width, height;
@@ -33,7 +33,9 @@ private:
 	VertexType* vertices;
 	UINT* indices;
 
-	Texture* texture[3];
+	Texture* texture;
+
+	ID3D11SamplerState* state;
 private:
 	void CreateNormal();
 };
