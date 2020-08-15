@@ -11,21 +11,9 @@ public:
 	void Render();
 
 private:
-	ModelBone* leftBackWheelBone;
-	D3DXMATRIX leftBackWheel;
+	unordered_map<wstring, pair<ModelBone*, D3DXMATRIX>> bones;
+	float steerDegree;
+	float steerSpeed;
 
-	ModelBone* rightBackWheelBone;
-	D3DXMATRIX rightBackWheel;
-
-	ModelBone* leftFrontWheelBone;
-	D3DXMATRIX leftFrontWheel;
-
-	ModelBone* rightFrontWheelBone;
-	D3DXMATRIX rightFrontWheel;
-
-	ModelBone* turretBone;
-	D3DXMATRIX turret;
-
-	ModelBone* cannonBone;
-	D3DXMATRIX cannon;
+	void SetBoneMatrix(wstring boneName, D3DXMATRIX matrix);
 };
