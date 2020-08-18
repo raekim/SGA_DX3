@@ -55,6 +55,14 @@ void DrawLandscape::Update()
 		position.x += 10.0f * Time::Delta();
 	}
 
+	position.y = terrain->Y(position);
+
+	//D3DXVECTOR3 newPosition;
+	//if (terrain->Y(&newPosition, position))
+	//{
+	//	position.y = newPosition.y;
+	//}
+
 	sphere->Position(position);
 
 	terrain->Update();
