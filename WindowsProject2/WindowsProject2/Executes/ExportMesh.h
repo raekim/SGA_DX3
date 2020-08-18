@@ -17,6 +17,5 @@ public:
 	void ResizeScreen();
 
 private:
-	vector<class GameModel*> models;
 };
 

@@ -19,42 +19,34 @@ ExportMesh::ExportMesh(ExecuteValues* values) : Execute(values)
 	//	SAFE_DELETE(exporter);
 	//}
 
-	for (int i = 0; i < 20; ++i)
-	{
-		GameModel* model = new GameModel(Materials + L"Meshes/", L"Teapot.material", Models + L"Meshes/", L"Teapot.mesh" );
-	
-		// ¸ðµ¨ À§Ä¡ ·£´ý ¼³Á¤
-		D3DXVECTOR3 temp;
-		temp.x = Math::Random(-20, 20);
-		temp.y = 0;
-		temp.z = Math::Random(-20, 20);
-		model->Position(temp);
-	
-		// ¸ðµ¨ È¸Àü ·£´ý ¼³Á¤
-		D3DXMATRIX R;
-		D3DXMatrixRotationY(&R, Math::ToRadian(Math::Random(-180, 180)));
-		model->RootAxis(R);
-	
-		models.push_back(model);
-	}
+	//for (int i = 0; i < 20; ++i)
+	//{
+	//	GameModel* model = new GameModel(Materials + L"Meshes/", L"Teapot.material", Models + L"Meshes/", L"Teapot.mesh" );
+	//
+	//	// ¸ðµ¨ À§Ä¡ ·£´ý ¼³Á¤
+	//	D3DXVECTOR3 temp;
+	//	temp.x = Math::Random(-20, 20);
+	//	temp.y = 0;
+	//	temp.z = Math::Random(-20, 20);
+	//	model->Position(temp);
+	//
+	//	// ¸ðµ¨ È¸Àü ·£´ý ¼³Á¤
+	//	D3DXMATRIX R;
+	//	D3DXMatrixRotationY(&R, Math::ToRadian(Math::Random(-180, 180)));
+	//	model->RootAxis(R);
+	//
+	//	models.push_back(model);
+	//}
 	
 	Models::Delete();
 }
 
 ExportMesh::~ExportMesh()
 {
-	for (GameModel* model : models)
-	{
-		SAFE_DELETE(model);
-	}
 }
 
 void ExportMesh::Update() 
 {
-	for (GameModel* model : models)
-	{
-		model->Update();
-	}
 }
 
 void ExportMesh::PreRender()
@@ -64,10 +56,6 @@ void ExportMesh::PreRender()
 
 void ExportMesh::Render()
 {
-	for (GameModel* model : models)
-	{
-		model->Render();
-	}
 }
 
 void ExportMesh::PostRender()
