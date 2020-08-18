@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Executes\DrawLandscape.h" />
     <ClInclude Include="Executes\Execute.h" />
     <ClInclude Include="Executes\ExeExportModel.h" />
     <ClInclude Include="Executes\ExeTexture.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="Objects\GameTank.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Objects\MeshSphere.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Renders\GlobalBuffers.h" />
     <ClInclude Include="Renders\Material.h" />
@@ -207,6 +209,7 @@
     <ClInclude Include="Main.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Executes\DrawLandscape.cpp" />
     <ClCompile Include="Executes\ExeExportModel.cpp" />
     <ClCompile Include="Executes\ExeTexture.cpp" />
     <ClCompile Include="Executes\ExportMesh.cpp" />
@@ -223,6 +226,7 @@
     <ClCompile Include="Objects\GameTank.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Objects\MeshSphere.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Renders\Material.cpp" />
     <ClCompile Include="Renders\Shader.cpp" />

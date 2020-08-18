@@ -1,9 +1,10 @@
 #include "framework.h"
 #include "Program.h"
 #include "./Viewer/Freedom.h"
+
 #include "Executes/ExeExportModel.h"
 #include "Executes/ExportMesh.h"
-#include "Objects/GameTank.h"
+#include "Executes/DrawLandscape.h"
 
 Program::Program()
 {
@@ -21,8 +22,9 @@ Program::Program()
 	values->MainCamera = new Freedom();
 	values->MainCamera->Position(2.64f, 1.35f, -3.59f);
 
-	executes.push_back(new ExeExportModel(values));
-	executes.push_back(new ExportMesh(values));
+	//executes.push_back(new ExeExportModel(values));
+	//executes.push_back(new ExportMesh(values));
+	executes.push_back(new DrawLandscape(values));
 }
 
 Program::~Program()
@@ -73,8 +75,18 @@ void Program::PostRender()
 	for (Execute* exe : executes)
 		exe->PostRender();
 
-	ImGui::SliderFloat3("Direction", (float*)&values->GlobalLight->Data.Direction, -1, 1);
 	ImGui::Text("FPS : %f", Time::Get()->FPS());
+	ImGui::Separator();
+	ImGui::SliderFloat3("Direction", (float*)&values->GlobalLight->Data.Direction, -1, 1);
+	ImGui::Separator();
+
+	D3DXVECTOR3 vec;
+	values->MainCamera->Position(&vec);
+	ImGui::LabelText("CameraPos(x,y,z)", "%.2f, %.2f, %.2f", vec.x, vec.y, vec.z);
+
+	D3DXVECTOR2 rot;
+	values->MainCamera->RotationDegree(&rot);
+	ImGui::LabelText("CameraRot(x,y,z)", "%.2f, %.2f", rot.x, rot.y);
 }
 
 void Program::ResizeScreen()
