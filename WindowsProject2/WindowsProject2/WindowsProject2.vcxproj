@@ -169,6 +169,7 @@
     <ClInclude Include="Fbx\Utility.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Interfaces\ICloneable.h" />
+    <ClInclude Include="LandScape\Terrain.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="Model\ModelBone.h" />
     <ClInclude Include="Model\ModelMesh.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="Executes\ExportMesh.cpp" />
     <ClCompile Include="Fbx\Exporter.cpp" />
     <ClCompile Include="Fbx\Utility.cpp" />
+    <ClCompile Include="LandScape\Terrain.cpp" />
     <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Model\ModelBone.cpp" />
     <ClCompile Include="Model\ModelMesh.cpp" />

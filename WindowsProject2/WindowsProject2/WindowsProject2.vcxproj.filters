@@ -40,6 +40,9 @@
     <Filter Include="Model">
       <UniqueIdentifier>{b9a0f079-e286-46a9-a0c1-cc86c936e51f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LandScape">
+      <UniqueIdentifier>{f6f78520-a031-4633-a53a-44bf3ef34153}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -168,6 +171,9 @@
     <ClInclude Include="Objects\GameModel.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="LandScape\Terrain.h">
+      <Filter>LandScape</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renders\Shader.cpp">
@@ -271,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="Objects\GameModel.cpp">
       <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="LandScape\Terrain.cpp">
+      <Filter>LandScape</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
