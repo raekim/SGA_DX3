@@ -3,7 +3,7 @@
 class Terrain
 {
 public:
-	Terrain(Material* material, wstring heightMap);
+	Terrain(ExecuteValues* values, Material* material, wstring heightMap);
 	~Terrain();
 
 	void Update();
@@ -11,10 +11,13 @@ public:
 
 	float Y(D3DXVECTOR3& position);
 	bool Y(OUT D3DXVECTOR3* out, D3DXVECTOR3& position);
+	bool Y(OUT D3DXVECTOR3* out);
 private:
 	void CreateData();
 	void CreateBuffer();
 private:
+	ExecuteValues* values;
+
 	Material* material;
 	WorldBuffer* worldBuffer;
 
@@ -26,4 +29,6 @@ private:
 	vector<UINT> indices;
 
 	ID3D11Buffer* vertexBuffer, *indexBuffer;
+
+	ID3D11RasterizerState* rasterizer[2];
 };

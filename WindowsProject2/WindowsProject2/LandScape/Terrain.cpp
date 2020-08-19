@@ -1,14 +1,24 @@
 #include "framework.h"
 #include "Terrain.h"
 
-Terrain::Terrain(Material* material, wstring heightMap)
-	: material(material)
+Terrain::Terrain(ExecuteValues* values, Material* material, wstring heightMap)
+	: values(values), material(material)
 {
 	heightTexture = new Texture(heightMap);
 	worldBuffer = new WorldBuffer();
 
 	CreateData();
 	CreateBuffer();
+
+	// Create Rasterizer
+	{
+		D3D11_RASTERIZER_DESC desc;
+		States::GetRasterizerDesc(&desc);
+		States::CreateRasterizer(&desc, &rasterizer[0]);
+
+		desc.FillMode = D3D11_FILL_WIREFRAME;
+		States::CreateRasterizer(&desc, &rasterizer[1]);
+	}
 }
 
 Terrain::~Terrain()
@@ -37,7 +47,9 @@ void Terrain::Render()
 	worldBuffer->SetVSBuffer(1);
 	material->PSSetBuffer();
 	
+	D3D::GetDC()->RSSetState(rasterizer[1]);
 	D3D::GetDC()->DrawIndexed(indices.size(), 0, 0);
+	D3D::GetDC()->RSSetState(rasterizer[0]);
 }
 
 // 해당 position의 높이값을 얻어 온다
@@ -126,6 +138,49 @@ bool Terrain::Y(OUT D3DXVECTOR3 * out, D3DXVECTOR3 & position)
 	return false;
 }
 
+bool Terrain::Y(OUT D3DXVECTOR3 * out)
+{
+	D3DXVECTOR3 start;
+	values->MainCamera->Position(&start);
+
+	D3DXVECTOR3 direction = values->MainCamera->Direction(values->Viewport, values->Perspective);
+
+	for (UINT z = 0; z < height; ++z)
+	{
+		for (UINT x = 0; x < width; ++x)
+		{
+			UINT index[4];
+			index[0] = (width + 1)*z + x;
+			index[1] = (width + 1)*(z + 1) + x;
+			index[2] = (width + 1)*z + (x + 1);
+			index[3] = (width + 1)*(z + 1) + (x + 1);
+
+			D3DXVECTOR3 p[4];
+			for (int i = 0; i < 4; ++i)
+			{
+				p[i] = vertices[index[i]].Position;
+			}
+
+			float u, v, distance;
+
+			// 첫 번째 면에 Ray 쏘기
+			if (D3DXIntersectTri(&p[0], &p[1], &p[2], &start, &direction, &u, &v, &distance))
+			{
+				*out = p[0] + (p[1] - p[0]) * u + (p[2] - p[0]) * v;
+				return true;
+			}
+			// 두 번째 면에 Ray 쏘기
+			if (D3DXIntersectTri(&p[3], &p[1], &p[2], &start, &direction, &u, &v, &distance))
+			{
+				*out = p[3] + (p[1] - p[3]) * u + (p[2] - p[3]) * v;
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 void Terrain::CreateData()
 {
 	vector<D3DXCOLOR> heights;
@@ -146,6 +201,7 @@ void Terrain::CreateData()
 	
 				vertices[index].Position.x = (float)x; // (float)x * (unit meter)
 				vertices[index].Position.y = (float)(heights[index].r * 255.0f) / 10;
+				//vertices[index].Position.y = 0.0f;
 				vertices[index].Position.z = (float)z;
 
 				vertices[index].Uv.x = (float)x / width;

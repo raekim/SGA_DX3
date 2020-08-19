@@ -65,6 +65,8 @@ public:
 
 	virtual void Update() = 0;
 
+	D3DXVECTOR3 Direction(class Viewport* vp, class Perspective* perspective);
+
 protected:
 	virtual void Move();
 	virtual void Rotation();
