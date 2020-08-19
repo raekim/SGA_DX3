@@ -19,5 +19,7 @@ public:
 private:
 	class Terrain* terrain;
 	class MeshSphere* sphere;
+	vector<class GameModel *> gameModels;
+	int selectNum;
 };
 

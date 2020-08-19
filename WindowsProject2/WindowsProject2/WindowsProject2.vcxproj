@@ -180,6 +180,8 @@
     <ClInclude Include="Objects\GameTank.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Objects\MeshCapsule.h" />
+    <ClInclude Include="Objects\MeshCylinder.h" />
     <ClInclude Include="Objects\MeshSphere.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Renders\GlobalBuffers.h" />
@@ -226,6 +228,8 @@
     <ClCompile Include="Objects\GameTank.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Objects\MeshCapsule.cpp" />
+    <ClCompile Include="Objects\MeshCylinder.cpp" />
     <ClCompile Include="Objects\MeshSphere.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Renders\Material.cpp" />

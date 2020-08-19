@@ -9,15 +9,15 @@ ExportMesh::ExportMesh(ExecuteValues* values) : Execute(values)
 	
 	vector<wstring> str = { L"Capsule", L"Cube", L"Cylinder", L"Plane", L"Quad", L"Sphere", L"Teapot"};
 	
-	//for (auto& modelName : str)
-	//{
-	//	exporter = new Fbx::Exporter(Assets + L"Meshes/" + modelName + L".fbx");
-	//
-	//	exporter->ExportMaterial(Materials + L"Meshes/", modelName + L".material");
-	//	exporter->ExportMesh(Models + L"Meshes/", modelName + L".mesh");
-	//
-	//	SAFE_DELETE(exporter);
-	//}
+	for (auto& modelName : str)
+	{
+		exporter = new Fbx::Exporter(Assets + L"Meshes/" + modelName + L".fbx");
+	
+		exporter->ExportMaterial(Materials + L"Meshes/", modelName + L".material");
+		exporter->ExportMesh(Models + L"Meshes/", modelName + L".mesh");
+	
+		SAFE_DELETE(exporter);
+	}
 
 	//for (int i = 0; i < 20; ++i)
 	//{

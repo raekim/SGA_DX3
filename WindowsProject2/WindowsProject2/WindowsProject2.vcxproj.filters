@@ -180,6 +180,12 @@
     <ClInclude Include="Executes\DrawLandscape.h">
       <Filter>Executes</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\MeshCapsule.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\MeshCylinder.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renders\Shader.cpp">
@@ -292,6 +298,12 @@
     </ClCompile>
     <ClCompile Include="Executes\DrawLandscape.cpp">
       <Filter>Executes</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\MeshCapsule.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\MeshCylinder.cpp">
+      <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
