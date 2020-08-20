@@ -6,8 +6,10 @@ Terrain::Terrain(ExecuteValues* values, Material* material, wstring heightMap)
 {
 	heightTexture = new Texture(heightMap);
 	worldBuffer = new WorldBuffer();
+	brushBuffer = new BrushBuffer();
 
 	CreateData();
+	CreateNormalData();
 	CreateBuffer();
 
 	// Create Rasterizer
@@ -23,14 +25,24 @@ Terrain::Terrain(ExecuteValues* values, Material* material, wstring heightMap)
 
 Terrain::~Terrain()
 {
+	SAFE_DELETE(vertices);
+	SAFE_DELETE(indices);
 	SAFE_DELETE(material);
 	SAFE_DELETE(heightTexture);
 	SAFE_DELETE(worldBuffer);
+	SAFE_DELETE(brushBuffer);
 }
 
 void Terrain::Update()
 {
-
+	if (D3DXVec3Length(&brushBuffer->Data.Location) > 0.0f)
+	{
+		UINT type = brushBuffer->Data.Type;
+		if (type == 1 && Mouse::Get()->Press(0))
+		{
+			AdjustY(brushBuffer->Data.Location);
+		}
+	}
 }
 
 
@@ -47,9 +59,9 @@ void Terrain::Render()
 	worldBuffer->SetVSBuffer(1);
 	material->PSSetBuffer();
 	
-	D3D::GetDC()->RSSetState(rasterizer[1]);
-	D3D::GetDC()->DrawIndexed(indices.size(), 0, 0);
-	D3D::GetDC()->RSSetState(rasterizer[0]);
+	//D3D::GetDC()->RSSetState(rasterizer[1]);
+	D3D::GetDC()->DrawIndexed(indexCount, 0, 0);
+	//D3D::GetDC()->RSSetState(rasterizer[0]);
 }
 
 // 해당 position의 높이값을 얻어 온다
@@ -167,18 +179,81 @@ bool Terrain::Y(OUT D3DXVECTOR3 * out)
 			if (D3DXIntersectTri(&p[0], &p[1], &p[2], &start, &direction, &u, &v, &distance))
 			{
 				*out = p[0] + (p[1] - p[0]) * u + (p[2] - p[0]) * v;
+				brushBuffer->Data.Location = *out;
 				return true;
 			}
 			// 두 번째 면에 Ray 쏘기
 			if (D3DXIntersectTri(&p[3], &p[1], &p[2], &start, &direction, &u, &v, &distance))
 			{
 				*out = p[3] + (p[1] - p[3]) * u + (p[2] - p[3]) * v;
+				brushBuffer->Data.Location = *out;
 				return true;
 			}
 		}
 	}
 
 	return false;
+}
+
+void Terrain::AdjustY(D3DXVECTOR3 & location)
+{
+	UINT size = (UINT)brushBuffer->Data.Range;
+
+	D3D11_BOX box;
+	box.left = (UINT)location.x - size;
+	box.right = (UINT)location.x + size;
+	box.top = (UINT)location.z + size;
+	box.bottom = (UINT)location.z - size;
+
+	// 범위 제한
+	box.left = max(box.left, 0);
+	box.top = min(box.top, height);
+	box.right = min(box.right, width);
+	box.bottom = max(box.bottom, 0);
+
+	for (UINT z = box.bottom; z <= box.top; ++z)
+	{
+		for (UINT x = box.left; x <= box.right; ++x)
+		{
+			UINT index = (width + 1)* z + x;
+			vertices[index].Position.y += 10.0f * Time::Delta();
+		}
+	}
+
+	CreateNormalData();
+	D3D::GetDC()->UpdateSubresource(vertexBuffer, 0, NULL, &vertices[0], sizeof(VertexTextureNormal), vertexCount);
+}
+
+void Terrain::CreateNormalData()
+{
+	// 정점의 노말 벡터 구하기
+		// 그 점이 속한 면들이 가진 모든 노말벡터를 합한 값
+	for (UINT i = 0; i < (indexCount / 3); ++i)
+	{
+		UINT index0 = indices[i * 3 + 0];
+		UINT index1 = indices[i * 3 + 1];
+		UINT index2 = indices[i * 3 + 2];
+
+		VertexTextureNormal v0 = vertices[index0];
+		VertexTextureNormal v1 = vertices[index1];
+		VertexTextureNormal v2 = vertices[index2];
+
+		D3DXVECTOR3 d1 = v1.Position - v0.Position;
+		D3DXVECTOR3 d2 = v2.Position - v0.Position;
+
+		D3DXVECTOR3 normal;
+		D3DXVec3Cross(&normal, &d1, &d2);
+
+		// 더해 줌
+		vertices[index0].Normal += normal;
+		vertices[index1].Normal += normal;
+		vertices[index2].Normal += normal;
+	}
+
+	for (UINT i = 0; i < vertexCount; ++i)
+	{
+		D3DXVec3Normalize(&vertices[i].Normal, &vertices[i].Normal);
+	}
 }
 
 void Terrain::CreateData()
@@ -191,7 +266,8 @@ void Terrain::CreateData()
 	
 	// Create VertexData
 	{
-		vertices.assign((width + 1) *(height + 1), VertexTextureNormal());
+		vertexCount = (width + 1) *(height + 1);
+		vertices = new VertexTextureNormal[vertexCount];
 	
 		for (UINT z = 0; z <= height; ++z)
 		{
@@ -212,8 +288,8 @@ void Terrain::CreateData()
 	
 	// Create IndexData
 	{
-		indices.assign(width * height * 6, UINT());
-		//indexCount = width * height * 6;	// grid 칸 수 * 하나의 칸을 그리는 데 삼각형 2개가 필요하므로 6개의 인덱스 필요
+		indexCount = width * height * 6; // grid 칸 수 * 하나의 칸을 그리는 데 삼각형 2개가 필요하므로 6개의 인덱스 필요
+		indices = new UINT[indexCount];
 	
 		UINT index = 0;
 		for (UINT z = 0; z < height; ++z)
@@ -232,38 +308,6 @@ void Terrain::CreateData()
 			}
 		}
 	}
-
-	// CreateNormal
-	{
-		// 정점의 노말 벡터 구하기
-	// 그 점이 속한 면들이 가진 모든 노말벡터를 합한 값
-		for (UINT i = 0; i < (indices.size() / 3); ++i)
-		{
-			UINT index0 = indices[i * 3 + 0];
-			UINT index1 = indices[i * 3 + 1];
-			UINT index2 = indices[i * 3 + 2];
-
-			VertexTextureNormal v0 = vertices[index0];
-			VertexTextureNormal v1 = vertices[index1];
-			VertexTextureNormal v2 = vertices[index2];
-
-			D3DXVECTOR3 d1 = v1.Position - v0.Position;
-			D3DXVECTOR3 d2 = v2.Position - v0.Position;
-
-			D3DXVECTOR3 normal;
-			D3DXVec3Cross(&normal, &d1, &d2);
-
-			// 더해 줌
-			vertices[index0].Normal += normal;
-			vertices[index1].Normal += normal;
-			vertices[index2].Normal += normal;
-		}
-
-		for (UINT i = 0; i < vertices.size(); ++i)
-		{
-			D3DXVec3Normalize(&vertices[i].Normal, &vertices[i].Normal);
-		}
-	}
 }
 
 void Terrain::CreateBuffer()
@@ -272,11 +316,11 @@ void Terrain::CreateBuffer()
 	{
 		D3D11_BUFFER_DESC desc = { 0 };
 		desc.Usage = D3D11_USAGE_DEFAULT;
-		desc.ByteWidth = sizeof(VertexTextureNormal) * vertices.size();//vertexCount;
+		desc.ByteWidth = sizeof(VertexTextureNormal) * vertexCount;
 		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	
 		D3D11_SUBRESOURCE_DATA data = { 0 };
-		data.pSysMem = &vertices[0];
+		data.pSysMem = vertices;
 	
 		HRESULT hr = D3D::GetDevice()->CreateBuffer(&desc, &data, &vertexBuffer);
 		assert(SUCCEEDED(hr));
@@ -286,11 +330,11 @@ void Terrain::CreateBuffer()
 	{
 		D3D11_BUFFER_DESC desc = { 0 };
 		desc.Usage = D3D11_USAGE_DEFAULT;
-		desc.ByteWidth = sizeof(UINT) * indices.size();
+		desc.ByteWidth = sizeof(UINT) * indexCount;
 		desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	
 		D3D11_SUBRESOURCE_DATA data = { 0 };
-		data.pSysMem = &indices[0];
+		data.pSysMem = indices;
 	
 		HRESULT hr = D3D::GetDevice()->CreateBuffer(&desc, &data, &indexBuffer);
 		assert(SUCCEEDED(hr));
