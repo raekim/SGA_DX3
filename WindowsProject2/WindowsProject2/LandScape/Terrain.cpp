@@ -1,10 +1,14 @@
 #include "framework.h"
 #include "Terrain.h"
 
-Terrain::Terrain(ExecuteValues* values, Material* material, wstring heightMap)
+Terrain::Terrain(ExecuteValues* values, Material* material)
 	: values(values), material(material)
 {
-	heightTexture = new Texture(heightMap);
+	heightTexture = new Texture(Contents + L"HeightMaps/HeightMap256.png");
+	colorTexture = new Texture(Textures + L"Dirt.png");
+	colorTexture2 = new Texture(Textures + L"Wall.png");
+	alphaTexture = new Texture(Contents + L"HeightMaps/ColorMap256.png");
+
 	worldBuffer = new WorldBuffer();
 	brushBuffer = new BrushBuffer();
 
@@ -20,6 +24,13 @@ Terrain::Terrain(ExecuteValues* values, Material* material, wstring heightMap)
 
 		desc.FillMode = D3D11_FILL_WIREFRAME;
 		States::CreateRasterizer(&desc, &rasterizer[1]);
+	}
+
+	// Create Sampler
+	{
+		D3D11_SAMPLER_DESC desc;
+		States::GetSamplerDesc(&desc);
+		States::CreateSampler(&desc, &sampler);
 	}
 }
 
@@ -48,6 +59,28 @@ void Terrain::Update()
 
 void Terrain::Render()
 {
+	ImGui::Separator();
+	ImGui::Text("Brush");
+	ImGui::Separator();
+
+	ImGui::SliderInt("Type", &brushBuffer->Data.Type, 0, 2);
+	ImGui::SliderInt("Range", &brushBuffer->Data.Range, 0, 5);
+	ImGui::SliderFloat3("Color", (float*)&brushBuffer->Data.Color, 0, 1);
+
+	ImGui::Separator();
+	ImGui::Spacing();
+
+	brushBuffer->SetVSBuffer(10);
+
+	colorTexture->SetShaderResource(10);
+	colorTexture->SetShaderSampler(10);
+
+	colorTexture2->SetShaderResource(11);
+	colorTexture2->SetShaderSampler(11);
+
+	alphaTexture->SetShaderResource(12);
+	alphaTexture->SetShaderSampler(12);
+
 	UINT stride = sizeof(VertexTextureNormal);
 	UINT offset = 0;
 	

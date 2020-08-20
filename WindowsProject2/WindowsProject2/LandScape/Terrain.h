@@ -3,7 +3,7 @@
 class Terrain
 {
 public:
-	Terrain(ExecuteValues* values, Material* material, wstring heightMap);
+	Terrain(ExecuteValues* values, Material* material);
 	~Terrain();
 
 	void Update();
@@ -24,6 +24,9 @@ private:
 	WorldBuffer* worldBuffer;
 
 	Texture* heightTexture;
+	Texture* colorTexture;
+	Texture* colorTexture2;
+	Texture* alphaTexture;
 
 	UINT width, height;
 
@@ -35,6 +38,7 @@ private:
 	ID3D11Buffer* vertexBuffer, *indexBuffer;
 
 	ID3D11RasterizerState* rasterizer[2];
+	ID3D11SamplerState* sampler;
 
 private:
 	class BrushBuffer : public ShaderBuffer 
@@ -50,7 +54,7 @@ private:
 
 		struct Struct 
 		{
-			UINT Type;
+			int Type;
 			D3DXVECTOR3 Location;
 
 			int Range;

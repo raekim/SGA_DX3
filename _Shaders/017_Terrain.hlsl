@@ -26,7 +26,7 @@ float4 PS(PixelInput input) : SV_TARGET
 {   
     float4 color = 0;
 
-    float4 diffuse = DiffuseMap.Sample(DiffuseSampler, input.Uv);
+	float4 diffuse = DiffuseMap.Sample(DiffuseSampler, input.Uv);
     DiffuseLighting(color, diffuse, input.Normal);
 
     return color;

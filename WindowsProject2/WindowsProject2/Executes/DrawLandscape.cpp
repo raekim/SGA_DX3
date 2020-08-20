@@ -8,11 +8,9 @@ DrawLandscape::DrawLandscape(ExecuteValues* values) : Execute(values)
 {
 	// Create Terrain
 	{
-		wstring heightMap = Contents + L"HeightMaps/HeightMap256.png";	// heightMap의 경로
-		Material* material = new Material(Shaders + L"017_Terrain.hlsl");
-		material->SetDiffuseMap(Textures + L"Dirt2.png");
+		Material* material = new Material(Shaders + L"020_TerrainSplatting.hlsl");	// 019_TerrainBrush.hlsl 적용하면 브러쉬 컬러 적용 가능
 		
-		terrain = new Terrain(values, material, heightMap);
+		terrain = new Terrain(values, material);
 	}
 
 	// Create Sphere
