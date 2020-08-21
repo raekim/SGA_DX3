@@ -12,7 +12,7 @@ public:
 	float Y(D3DXVECTOR3& position);
 	bool Y(OUT D3DXVECTOR3* out, D3DXVECTOR3& position);
 	bool Y(OUT D3DXVECTOR3* out);
-	void AdjustY(D3DXVECTOR3 & location);
+	void AdjustY(D3DXVECTOR3 & location, float adjustYAmount);
 private:
 	void CreateData();
 	void CreateNormalData();

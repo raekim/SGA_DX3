@@ -49,9 +49,16 @@ void Terrain::Update()
 	if (D3DXVec3Length(&brushBuffer->Data.Location) > 0.0f)
 	{
 		UINT type = brushBuffer->Data.Type;
+
 		if (type == 1 && Mouse::Get()->Press(0))
 		{
-			AdjustY(brushBuffer->Data.Location);
+			AdjustY(brushBuffer->Data.Location, 10.0f);
+		}
+
+		// type 2 : ³·¾ÆÁø´Ù
+		if (type == 2 && Mouse::Get()->Press(0))
+		{
+			AdjustY(brushBuffer->Data.Location, -10.0f);
 		}
 	}
 }
@@ -228,7 +235,7 @@ bool Terrain::Y(OUT D3DXVECTOR3 * out)
 	return false;
 }
 
-void Terrain::AdjustY(D3DXVECTOR3 & location)
+void Terrain::AdjustY(D3DXVECTOR3 & location, float adjustYAmount)
 {
 	UINT size = (UINT)brushBuffer->Data.Range;
 
@@ -249,7 +256,8 @@ void Terrain::AdjustY(D3DXVECTOR3 & location)
 		for (UINT x = box.left; x <= box.right; ++x)
 		{
 			UINT index = (width + 1)* z + x;
-			vertices[index].Position.y += 10.0f * Time::Delta();
+			//vertices[index].Position.y += 10.0f * Time::Delta();
+			vertices[index].Position.y += adjustYAmount * Time::Delta();
 		}
 	}
 
