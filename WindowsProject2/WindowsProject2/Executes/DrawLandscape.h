@@ -19,5 +19,6 @@ public:
 private:
 	class Terrain* terrain;
 	class MeshSphere* sphere;
+	class Sky* sky;
 };
 

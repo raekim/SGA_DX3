@@ -41,7 +41,7 @@ private:
 	ID3D11SamplerState* sampler;
 
 private:
-	class BrushBuffer : public ShaderBuffer 
+	class BrushBuffer : public ShaderBuffer
 	{
 	public:
 		BrushBuffer() : ShaderBuffer(&Data, sizeof(Data))
@@ -52,7 +52,7 @@ private:
 			Data.Color = D3DXVECTOR3(0, 1, 0);
 		}
 
-		struct Struct 
+		struct Struct
 		{
 			int Type;
 			D3DXVECTOR3 Location;
@@ -63,4 +63,7 @@ private:
 	};
 
 	BrushBuffer* brushBuffer;
+
+public:
+	BrushBuffer* GetBrushBuffer() { return brushBuffer; }
 };
