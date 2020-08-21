@@ -11,6 +11,7 @@ Terrain::Terrain(ExecuteValues* values, Material* material)
 
 	worldBuffer = new WorldBuffer();
 	brushBuffer = new BrushBuffer();
+	gridBuffer = new GridBuffer();
 
 	CreateData();
 	CreateNormalData();
@@ -36,6 +37,7 @@ Terrain::Terrain(ExecuteValues* values, Material* material)
 
 Terrain::~Terrain()
 {
+	SAFE_DELETE(gridBuffer);
 	SAFE_DELETE(vertices);
 	SAFE_DELETE(indices);
 	SAFE_DELETE(material);
@@ -70,14 +72,21 @@ void Terrain::Render()
 	ImGui::Text("Brush");
 	ImGui::Separator();
 
-	ImGui::SliderInt("Type", &brushBuffer->Data.Type, 0, 2);
-	ImGui::SliderInt("Range", &brushBuffer->Data.Range, 0, 5);
-	ImGui::SliderFloat3("Color", (float*)&brushBuffer->Data.Color, 0, 1);
+	ImGui::SliderInt("Brush Type", &brushBuffer->Data.Type, 0, 2);
+	ImGui::SliderInt("Brush Range", &brushBuffer->Data.Range, 0, 5);
+	ImGui::SliderFloat3("Brush Color", (float*)&brushBuffer->Data.Color, 0, 1);
+
+	ImGui::Separator();
+	ImGui::SliderInt("Line Type", &gridBuffer->Data.Type, 0, 2);
+	ImGui::SliderFloat3("Line Color", (float*)&gridBuffer->Data.Color, 0, 1);
+	ImGui::SliderInt("Line Spacing", &gridBuffer->Data.Spacing, 1, 10);
+	ImGui::SliderFloat("Line Thickness", &gridBuffer->Data.Thickness, 0.01f, 0.5f);
 
 	ImGui::Separator();
 	ImGui::Spacing();
 
 	brushBuffer->SetVSBuffer(10);
+	gridBuffer->SetPSBuffer(10);
 
 	colorTexture->SetShaderResource(10);
 	colorTexture->SetShaderSampler(10);

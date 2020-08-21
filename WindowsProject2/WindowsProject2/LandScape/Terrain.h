@@ -46,7 +46,7 @@ private:
 	public:
 		BrushBuffer() : ShaderBuffer(&Data, sizeof(Data))
 		{
-			Data.Type = 1;
+			Data.Type = 0;
 			Data.Location = D3DXVECTOR3(0, 0, 0);
 			Data.Range = 2;
 			Data.Color = D3DXVECTOR3(0, 1, 0);
@@ -66,4 +66,31 @@ private:
 
 public:
 	BrushBuffer* GetBrushBuffer() { return brushBuffer; }
+
+private:
+	class GridBuffer : public ShaderBuffer
+	{
+	public:
+		GridBuffer() : ShaderBuffer(&Data, sizeof(Data))
+		{
+			Data.Type = 2;
+			Data.Color = D3DXVECTOR3(1, 1, 1);
+
+			Data.Spacing = 5;
+			Data.Thickness = 0.1f;
+		}
+
+		struct Struct 
+		{
+			int Type;
+			D3DXVECTOR3 Color;
+
+			int Spacing;
+			float Thickness;
+
+			float Padding[2];
+		} Data;
+	};
+
+	GridBuffer* gridBuffer;
 };
