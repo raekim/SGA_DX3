@@ -82,7 +82,7 @@ float3 Line(float3 oPosition)
     if (LineType == 1)
     {
         float2 grid = 0;
-        grid.x = frac(oPosition.x / (float) Spacing);
+        grid.x = frac(oPosition.x / (float) Spacing);	// frac(x) : x의 소수점 아래자리 리턴
         grid.y = frac(oPosition.z / (float) Spacing);
 
         [flatten]

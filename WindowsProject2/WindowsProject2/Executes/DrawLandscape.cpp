@@ -10,7 +10,7 @@ DrawLandscape::DrawLandscape(ExecuteValues* values) : Execute(values)
 
 	// Create Terrain
 	{
-		Material* material = new Material(Shaders + L"020_TerrainSplatting.hlsl");	// 019_TerrainBrush.hlsl 적용하면 브러쉬 컬러 적용 가능
+		Material* material = new Material(Shaders + L"022_TerrainBrushLine.hlsl");
 		
 		terrain = new Terrain(values, material);
 	}
@@ -35,8 +35,8 @@ DrawLandscape::~DrawLandscape()
 
 void DrawLandscape::Update()
 {
-	sky->Update();
 	terrain->Update();
+	sky->Update();
 }
 
 void DrawLandscape::PreRender()
