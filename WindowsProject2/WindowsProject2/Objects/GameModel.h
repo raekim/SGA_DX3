@@ -18,6 +18,10 @@ public:
 	virtual void Render();
 
 	void Rotate(D3DXVECTOR2 amount);
+	void RotateDegree(D3DXVECTOR2 amount);
+
+	void Scale(D3DXVECTOR3 amount);
+	D3DXVECTOR3 Scale();
 
 	Model* GetModel(){ return model; }
 
@@ -30,8 +34,11 @@ protected:
 
 	D3DXVECTOR3 velocity;
 
+	D3DXMATRIX matScale;
 	D3DXMATRIX matRotation;
 	vector<D3DXMATRIX> boneTransforms;
+
+	D3DXVECTOR3 scale;
 
 private:
 	class RenderBuffer : public ShaderBuffer

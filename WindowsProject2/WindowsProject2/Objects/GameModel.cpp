@@ -2,17 +2,14 @@
 #include "GameModel.h"
 
 GameModel::GameModel(wstring matFolder, wstring matFile, wstring meshFolder, wstring meshFile)
-	: velocity(0, 0, 0)
+	: shader(NULL), velocity(0, 0, 0)
 {
 	model = new Model();
 	model->ReadMaterial(matFolder, matFile);
 	model->ReadMesh(meshFolder, meshFile);
 
-	shader = new Shader(Shaders + L"014_Model.hlsl");
-	for (Material* material : model->Materials())
-		material->SetShader(shader);
-
 	D3DXMatrixIdentity(&matRotation);
+	D3DXMatrixIdentity(&matScale);
 
 	renderBuffer = new RenderBuffer();
 }
@@ -63,7 +60,6 @@ void GameModel::Rotate(D3DXVECTOR2 amount)
 {
 	amount *= Time::Delta();
 
-
 	D3DXMATRIX axis;
 	D3DXMatrixRotationAxis(&axis, &Right(), amount.y);
 
@@ -74,6 +70,27 @@ void GameModel::Rotate(D3DXVECTOR2 amount)
 
 	D3DXMATRIX R = World();
 	World(matRotation * R);
+}
+
+void GameModel::Scale(D3DXVECTOR3 amount)
+{
+	scale = amount;
+	D3DXMatrixScaling(&matScale, amount.x, amount.y, amount.z);
+
+	D3DXMATRIX S = World();
+	World(matScale * S);
+}
+
+D3DXVECTOR3 GameModel::Scale() 
+{ 
+	return scale; 
+}
+
+void GameModel::RotateDegree(D3DXVECTOR2 amount)
+{
+	amount.x = Math::ToRadian(amount.x);
+	amount.y = Math::ToRadian(amount.y);
+	Rotate(amount);
 }
 
 void GameModel::CalcPosition()
