@@ -4,6 +4,8 @@
 
 Sky::Sky(ExecuteValues* values) : values(values)
 {
+	diff = { 0, -0.127122313f, 0 };
+
 	model = new GameModel(Materials + L"Meshes/", L"Sphere.material", Models + L"Meshes/", L"Sphere.mesh");
 
 	for (Material* material : model->GetModel()->Materials())
@@ -30,7 +32,6 @@ Sky::Sky(ExecuteValues* values) : values(values)
 		States::CreateDepthStencil(&desc, &depthMode[0]);
 
 		desc.DepthEnable = false;
-		desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 		States::CreateDepthStencil(&desc, &depthMode[1]);
 	}
 }
@@ -45,7 +46,20 @@ void Sky::Update()
 	D3DXVECTOR3 camPos;
 	values->MainCamera->Position(&camPos);	// 메인카메라의 포지션을 받아온다
 
-	model->Position(camPos);
+	//if (Keyboard::Get()->Press('I'))
+	//	diff.z += 1.0f * Time::Delta();
+	//if (Keyboard::Get()->Press('K'))
+	//	diff.z -= 1.0f * Time::Delta();
+	//if (Keyboard::Get()->Press('L'))
+	//	diff.x += 1.0f * Time::Delta();
+	//if (Keyboard::Get()->Press('J'))
+	//	diff.x -= 1.0f * Time::Delta();
+	//if (Keyboard::Get()->Press('O'))
+	//	diff.y += 1.0f * Time::Delta();
+	//if (Keyboard::Get()->Press('U'))
+	//	diff.y -= 1.0f * Time::Delta();
+
+	model->Position(camPos + diff);
 	model->Update();
 }
 

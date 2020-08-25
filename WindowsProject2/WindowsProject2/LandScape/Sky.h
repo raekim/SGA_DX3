@@ -10,6 +10,7 @@ public:
 	void Render();
 
 private:
+	D3DXVECTOR3 diff;
 	class GameModel* model;
 	ExecuteValues* values;
 

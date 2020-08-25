@@ -13,6 +13,8 @@ public:
 	bool Y(OUT D3DXVECTOR3* out, D3DXVECTOR3& position);
 	bool Y(OUT D3DXVECTOR3* out);
 	void AdjustY(D3DXVECTOR3 & location, float adjustYAmount);
+
+	int GetGridLineSpacing() { return gridBuffer->Data.Spacing; }
 private:
 	void CreateData();
 	void CreateNormalData();

@@ -2,7 +2,7 @@
 #include "MeshSphere.h"
 
 MeshSphere::MeshSphere()
-	: GameModel(Materials + L"Meshes/", L"Sphere.material", Models + L"Meshes/", L"Sphere.mesh")
+	:GameModel(Materials + L"Meshes/", L"Sphere.material", Models + L"Meshes/" , L"Sphere.mesh")
 {
 	shader = new Shader(Shaders + L"017_Sphere.hlsl");
 

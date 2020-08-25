@@ -203,11 +203,11 @@
     <ClInclude Include="Utilities\Path.h" />
     <ClInclude Include="Utilities\String.h" />
     <ClInclude Include="Utilities\Xml.h" />
+    <ClInclude Include="Main.h" />
     <ClInclude Include="Viewer\Camera.h" />
     <ClInclude Include="Viewer\Freedom.h" />
     <ClInclude Include="Viewer\Perspective.h" />
     <ClInclude Include="Viewer\Viewport.h" />
-    <ClInclude Include="Main.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Executes\DrawLandscape.cpp" />
@@ -245,14 +245,14 @@
     <ClCompile Include="Utilities\Path.cpp" />
     <ClCompile Include="Utilities\String.cpp" />
     <ClCompile Include="Utilities\Xml.cpp" />
-    <ClCompile Include="Viewer\Camera.cpp" />
-    <ClCompile Include="Viewer\Freedom.cpp" />
-    <ClCompile Include="Viewer\Perspective.cpp" />
-    <ClCompile Include="Viewer\Viewport.cpp" />
     <ClCompile Include="Main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Viewer\Camera.cpp" />
+    <ClCompile Include="Viewer\Freedom.cpp" />
+    <ClCompile Include="Viewer\Perspective.cpp" />
+    <ClCompile Include="Viewer\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WindowsProject2.rc" />

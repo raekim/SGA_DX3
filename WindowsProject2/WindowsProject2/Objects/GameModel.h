@@ -19,7 +19,7 @@ public:
 
 	void Rotate(D3DXVECTOR2 amount);
 
-	Model* GetModel() { return model; }
+	Model* GetModel(){ return model; }
 
 protected:
 	void CalcPosition();

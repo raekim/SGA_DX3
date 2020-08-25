@@ -20,5 +20,12 @@ private:
 	class Terrain* terrain;
 	class MeshSphere* sphere;
 	class Sky* sky;
+
+	// grid snap ฐüทร
+	bool snapped;
+	bool canMove;
+	float sphereSpeed;
+	D3DXVECTOR3 spherePos;
+	float snapRange;
 };
 

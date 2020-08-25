@@ -105,12 +105,6 @@
     <ClInclude Include="Executes\Execute.h">
       <Filter>Executes</Filter>
     </ClInclude>
-    <ClInclude Include="Viewer\Viewport.h">
-      <Filter>Viewer</Filter>
-    </ClInclude>
-    <ClInclude Include="Viewer\Perspective.h">
-      <Filter>Viewer</Filter>
-    </ClInclude>
     <ClInclude Include="Main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -119,12 +113,6 @@
     </ClInclude>
     <ClInclude Include="Executes\ExeTexture.h">
       <Filter>Executes</Filter>
-    </ClInclude>
-    <ClInclude Include="Viewer\Camera.h">
-      <Filter>Viewer</Filter>
-    </ClInclude>
-    <ClInclude Include="Viewer\Freedom.h">
-      <Filter>Viewer</Filter>
     </ClInclude>
     <ClInclude Include="Renders\Texture.h">
       <Filter>Renders</Filter>
@@ -159,29 +147,41 @@
     <ClInclude Include="Model\Model.h">
       <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\GameRender.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Executes\ExportMesh.h">
       <Filter>Executes</Filter>
     </ClInclude>
     <ClInclude Include="Objects\GameTank.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\GameModel.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="LandScape\Terrain.h">
       <Filter>LandScape</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\MeshSphere.h">
-      <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Executes\DrawLandscape.h">
       <Filter>Executes</Filter>
     </ClInclude>
     <ClInclude Include="LandScape\Sky.h">
       <Filter>LandScape</Filter>
+    </ClInclude>
+    <ClInclude Include="Viewer\Camera.h">
+      <Filter>Viewer</Filter>
+    </ClInclude>
+    <ClInclude Include="Viewer\Freedom.h">
+      <Filter>Viewer</Filter>
+    </ClInclude>
+    <ClInclude Include="Viewer\Perspective.h">
+      <Filter>Viewer</Filter>
+    </ClInclude>
+    <ClInclude Include="Viewer\Viewport.h">
+      <Filter>Viewer</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\MeshSphere.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GameModel.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GameRender.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -224,12 +224,6 @@
     <ClCompile Include="Utilities\String.cpp">
       <Filter>Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="Viewer\Viewport.cpp">
-      <Filter>Viewer</Filter>
-    </ClCompile>
-    <ClCompile Include="Viewer\Perspective.cpp">
-      <Filter>Viewer</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -238,12 +232,6 @@
     </ClCompile>
     <ClCompile Include="Executes\ExeTexture.cpp">
       <Filter>Executes</Filter>
-    </ClCompile>
-    <ClCompile Include="Viewer\Camera.cpp">
-      <Filter>Viewer</Filter>
-    </ClCompile>
-    <ClCompile Include="Viewer\Freedom.cpp">
-      <Filter>Viewer</Filter>
     </ClCompile>
     <ClCompile Include="Renders\Texture.cpp">
       <Filter>Renders</Filter>
@@ -275,29 +263,41 @@
     <ClCompile Include="Model\Model.cpp">
       <Filter>Model</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\GameRender.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Executes\ExportMesh.cpp">
       <Filter>Executes</Filter>
     </ClCompile>
     <ClCompile Include="Objects\GameTank.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\GameModel.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="LandScape\Terrain.cpp">
       <Filter>LandScape</Filter>
-    </ClCompile>
-    <ClCompile Include="Objects\MeshSphere.cpp">
-      <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Executes\DrawLandscape.cpp">
       <Filter>Executes</Filter>
     </ClCompile>
     <ClCompile Include="LandScape\Sky.cpp">
       <Filter>LandScape</Filter>
+    </ClCompile>
+    <ClCompile Include="Viewer\Camera.cpp">
+      <Filter>Viewer</Filter>
+    </ClCompile>
+    <ClCompile Include="Viewer\Freedom.cpp">
+      <Filter>Viewer</Filter>
+    </ClCompile>
+    <ClCompile Include="Viewer\Perspective.cpp">
+      <Filter>Viewer</Filter>
+    </ClCompile>
+    <ClCompile Include="Viewer\Viewport.cpp">
+      <Filter>Viewer</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\MeshSphere.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GameModel.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GameRender.cpp">
+      <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

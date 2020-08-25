@@ -63,6 +63,31 @@ public:
 		*vec = up;
 	}
 
+	void Pivot(D3DXVECTOR3* vec)
+	{
+		*vec = *pivot;
+	}
+
+	void SetPivot(D3DXVECTOR3* vec)
+	{
+		pivot = vec;
+	}
+
+	void SetPivotDistance(float dist)
+	{
+		pivotDistance = dist;
+	}
+
+	bool IsPivot()
+	{
+		bool result = false;
+
+		if (pivot)
+			result = true;
+
+		return result;
+	}
+
 	virtual void Update() = 0;
 
 	D3DXVECTOR3 Direction(class Viewport* vp, class Perspective* perspective);
@@ -83,5 +108,6 @@ private:
 	D3DXMATRIX matRotation;
 	D3DXMATRIX matView;
 
-	D3DXVECTOR3 pivot;
+	D3DXVECTOR3* pivot;
+	float pivotDistance;
 };
