@@ -176,6 +176,7 @@
     <ClInclude Include="Model\ModelBone.h" />
     <ClInclude Include="Model\ModelMesh.h" />
     <ClInclude Include="Model\ModelMeshPart.h" />
+    <ClInclude Include="Objects\Billboard.h" />
     <ClInclude Include="Objects\GameModel.h" />
     <ClInclude Include="Objects\GameRender.h" />
     <ClInclude Include="Objects\GameTank.h">
@@ -223,6 +224,7 @@
     <ClCompile Include="Model\ModelMesh.cpp" />
     <ClCompile Include="Model\ModelMeshPart.cpp" />
     <ClCompile Include="Model\ModelReader.cpp" />
+    <ClCompile Include="Objects\Billboard.cpp" />
     <ClCompile Include="Objects\GameModel.cpp" />
     <ClCompile Include="Objects\GameRender.cpp" />
     <ClCompile Include="Objects\GameTank.cpp">

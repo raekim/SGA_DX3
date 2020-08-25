@@ -3,6 +3,7 @@
 #include "../LandScape/Sky.h"
 #include "../LandScape/Terrain.h"
 #include "../Objects/MeshSphere.h"
+#include "../Objects/Billboard.h"
 
 DrawLandscape::DrawLandscape(ExecuteValues* values) : Execute(values), snapped(true), canMove(true), spherePos({0,0,0}),
 snapRange(1.5f)
@@ -27,6 +28,15 @@ snapRange(1.5f)
 
 	{
 		sky = new Sky(values);
+	}
+
+	{
+		for (int i = 0; i < 20; ++i)
+		{
+			Billboard* tree = new  Billboard(values, Shaders + L"024_Billboard.hlsl",
+				Textures + L"Tree.png");
+
+		}
 	}
 }
 

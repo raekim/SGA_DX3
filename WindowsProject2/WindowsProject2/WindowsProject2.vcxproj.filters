@@ -183,6 +183,9 @@
     <ClInclude Include="Objects\GameRender.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\Billboard.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renders\Shader.cpp">
@@ -297,6 +300,9 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Objects\GameRender.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Billboard.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>

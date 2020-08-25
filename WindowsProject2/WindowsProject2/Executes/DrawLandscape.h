@@ -21,6 +21,8 @@ private:
 	class MeshSphere* sphere;
 	class Sky* sky;
 
+	vector<class Billboard*> trees;
+
 	// grid snap ฐüทร
 	bool snapped;
 	bool canMove;
